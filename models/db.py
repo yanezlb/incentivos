@@ -170,3 +170,38 @@ def campos_comunes():
         Field('is_active','boolean', readable=False,writable=False,default=True),
     )
     return campos_comunes
+
+
+db.define_table('region',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+)
+
+db.define_table('tipo_almacen',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+)
+
+db.define_table('parroquia',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+)
+
+db.define_table('municipio',
+    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+)
+
+db.define_table('estado',
+    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
+    Field('id_municipio', db.municipio, label='Municipio', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+)
+
+db.define_table('almacen',
+    Field('id_region', db.region, label='Región', notnull=True, required=True),
+    Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
+    Field('id_municipio', db.municipio, label='Municipio', notnull=True, required=True),
+    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
+    Field('id_tipo_almacen', db.tipo_almacen, label='Tipo Almacen', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    Field('direccion', 'string', label='Dirección', notnull=True, required=True),
+    campos_comunes()
+)
