@@ -93,11 +93,58 @@ response.form_label_separator = ""
 
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=configuration.get("host.names"))
-
+T.force('es')
 # -------------------------------------------------------------------------
 # create all tables needed by auth, maybe add a list of extra fields
 # -------------------------------------------------------------------------
-auth.settings.extra_fields["auth_user"] = []
+
+db.define_table('ente',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('negocio',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('localidad',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('region',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('parroquia',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('municipio',
+    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+db.define_table('estado',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+auth.settings.extra_fields["auth_user"] = [
+    Field('cedula', 'integer', label='CI'),
+    Field('id_ente', db.ente, label='Ente', notnull=True, required=True),
+    Field('id_negocio', db.negocio, label='Negocio / Filial', notnull=True, required=True),
+    Field('id_region', db.region, label='Región', notnull=True, required=True),
+    Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
+    Field('id_localidad', db.localidad, label='Localidad', notnull=True, required=True),
+    Field('telefono_oficina', 'string', label='Telf. Oficina', notnull=True, required=True, length=10, requires=[IS_MATCH('^[0-9]+$', error_message='Solo se permiten números'), IS_LENGTH(maxsize=10, minsize=3)]),
+    Field('telefono_celular', 'string', label='Telf. Celular', notnull=True, required=True, length=10, requires=[IS_MATCH('^[0-9]+$', error_message='Solo se permiten números'), IS_LENGTH(maxsize=10, minsize=3)]),
+]
+
 auth.define_tables(username=False, signature=False)
 
 # -------------------------------------------------------------------------
@@ -159,6 +206,8 @@ if configuration.get("scheduler.enabled"):
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
 # auth.enable_record_versioning(db)
+
+# Funcion para el registro de campos para la auditoria en las tablas
 def campos_comunes():
     campos_comunes = db.Table(db, 'comun',
         Field('creado_por',db.auth_user,default=auth.user_id,readable=False,writable=False),
@@ -171,27 +220,7 @@ def campos_comunes():
     )
     return campos_comunes
 
-
-db.define_table('region',
-    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-)
-
 db.define_table('tipo_almacen',
-    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-)
-
-db.define_table('parroquia',
-    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-)
-
-db.define_table('municipio',
-    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
-    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-)
-
-db.define_table('estado',
-    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
-    Field('id_municipio', db.municipio, label='Municipio', notnull=True, required=True),
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
 )
 
@@ -202,6 +231,38 @@ db.define_table('almacen',
     Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
     Field('id_tipo_almacen', db.tipo_almacen, label='Tipo Almacen', notnull=True, required=True),
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-    Field('direccion', 'string', label='Dirección', notnull=True, required=True),
+    Field('direccion', 'text', label='Dirección', notnull=True, required=True),
+    campos_comunes()
+)
+
+db.define_table('estatus_operativo',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    )
+
+db.define_table('operativo',
+    Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True),
+    Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True),
+    Field('fecha_fin_solicitud', 'date', label='Fecha Fin de Solicitud', notnull=True, required=True),
+    Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True),
+    Field('fecha_fin_entrega', 'date', label='Fecha Fin de Entrega', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre del operativo', notnull=True, required=True, length=25),
+    campos_comunes(),
+    format='%(nombre)s'
+)
+
+db.define_table('operativo_combo',
+    Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
+    Field('nombre', 'string', label='Nombre del combo', notnull=True, required=True, length=25),
+    Field('cant_personas', 'integer', label='Cantidad de personas', notnull=True, required=True),
+    Field('venta_maxima', 'integer', label='Venta máxima', notnull=True, required=True),
+    campos_comunes(),
+    format='%(nombre)s'
+)
+
+db.define_table('pedido_operativo',
+    Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
+    Field('id_pedido_operativo',  db.operativo_combo, label='Combo', notnull=True, required=True),
+    Field('id_usuario',  db.auth_user, label='Empleado', notnull=True, required=True),
+    Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
     campos_comunes()
 )
