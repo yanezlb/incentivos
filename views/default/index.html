@@ -1,91 +1,45 @@
 {{extend 'layout.html'}}
 
-{{block header}}
-<div class="jumbotron jumbotron-fluid background" style="background-color: #333; color:white; padding:30px;word-wrap:break-word;">
-  <div class="container center">
-    <h1 class="display-5">/{{=request.application}}/{{=request.controller}}/{{=request.function}}</h1>
-  </div>
-</div>
-{{end}}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+  </ol>
+</nav>
+<br><br>
 
-<div class="row">
-  <div class="col-md-12">
-    {{if 'message' in globals():}}
-    <h2>{{=message}}</h2>
-<div class="card">
-  <div class="card-header">
-    Encabezado del Panel
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Título del contenido</h5>
-    <p class="card-text">Aquí va la información principal que quieres mostrar.</p>
-    <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-  </div>
-  <div class="card-footer text-muted">
-    Hace 2 días
+<div class="text-center">
+  <div class="container">
+      <h1 class="display-3 font-weight-bold">Incentivos <span style="color:#ed1c24;">PDVSA</span></h1>
+      <p class="lead">Sistema centralizado para la administración y entrega de incentivos al talento humano.</p>
+      <br><br>
   </div>
 </div>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab">Inicio</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab">Perfil</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab">Contacto</a>
-  </li>
-</ul>
-
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active p-3" id="home" role="tabpanel">
-    <h4>Inicio</h4>
-    <p>Este es el contenido de la primera pestaña.</p>
-  </div>
-  <div class="tab-pane fade p-3" id="profile" role="tabpanel">
-    <h4>Perfil</h4>
-    <p>Aquí verías la información del usuario.</p>
-  </div>
-  <div class="tab-pane fade p-3" id="contact" role="tabpanel">
-    <h4>Contacto</h4>
-    <p>Formulario o datos de contacto aquí.</p>
-  </div>
-</div>
-    <p class="lead">{{=T('How did you get here?')}}</p>
-    <ol style="word-wrap:break-word;">
-      <li>{{=T('You are successfully running web2py')}}</li>
-      <li>{{=XML(T('You visited the url %s', A(request.env.path_info,_href=request.env.path_info)))}}</li>
-      <li>{{=XML(T('Which called the function %s located in the file %s',
-        (A(request.function+'()',_href='#'),
-        A('web2py/applications/%(application)s/controllers/%(controller)s.py' % request,
-        _href=URL('admin','default','peek', args=(request.application,'controllers',request.controller+'.py'))))))}}</li>
-      <li>{{=XML(T('The output of the file is a dictionary that was rendered by the view %s',
-        A('web2py/applications/%(application)s/views/%(controller)s/index.html' % request,
-        _href=URL('admin','default','peek',args=(request.application,'views',request.controller,'index.html')))))}}</li>
-      <li>{{=T('You can modify this application and adapt it to your needs')}}</li>
-    </ol>
-    <div class="jumbotron jumbotron-fluid" style="padding:30px;word-wrap:break-word;">
-      <div class="container center">
-        <a class="btn btn-primary" href="{{=URL('admin','default','index')}}">
-          <i class="fa fa-cog"></i>
-          {{=T("admin")}}
-        </a>
-        <a class="btn btn-secondary" href="{{=URL('examples','default','index')}}">{{=T("Online examples")}}</a>
-        <a class="btn btn-secondary" href="http://web2py.com">web2py.com</a>
-        <a class="btn btn-secondary" href="http://web2py.com/book">{{=T('Documentation')}}</a>
-        <a class="btn btn-secondary" href="{{=URL('default','api_get_user_email')}}">{{=T('API Example')}}</a>
-        <a class="btn btn-secondary" href="{{=URL('default','grid/auth_user')}}">{{=T('Grid Example')}}</a>
-        <a class="btn btn-secondary" href="{{=URL('default','wiki')}}">{{=T('Wiki Example')}}</a>
-      </div>
+<section id="modulos" class="container my-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card card-incentivo h-100 p-4">
+                <div class="icon-box"><i class="fas fa-truck-loading"></i></div>
+                <h3>Control almacenes</h3>
+                <p class="text-muted">Control de los beneficios disponibles en almacén.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card card-incentivo h-100 p-4">
+                <div class="icon-box"><i class="fas fa-users"></i></div>
+                <h3>Beneficiarios</h3>
+                <p class="text-muted">Gestión de datos del personal y asignación de incentivos por departamento.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card card-incentivo h-100 p-4">
+                <div class="icon-box"><i class="fas fa-clipboard-check"></i></div>
+                <h3>Pedidos</h3>
+                <p class="text-muted">Registro y trazabilidad de la logística de distribución a nivel nacional.</p>
+            </div>
+        </div>
     </div>
-    {{elif 'content' in globals():}}
-    {{=content}}
-    {{else:}}
-    {{=BEAUTIFY(response._vars)}}
-    {{pass}}
-  </div>
-</div>
+</section>
 
 
 

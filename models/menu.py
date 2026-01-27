@@ -4,29 +4,31 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # this is the main application menu add/remove items as required
 # ----------------------------------------------------------------------------------------------------------------------
-
-response.menu = [
-    (T('PEDIDOS'), False, URL('admin', 'default', 'site')),
-    (T('MIS DATOS'), False, URL('admin', 'default', 'site')),
-    (T('REPORTES'), False, '#', [
-        (T('ENTREGAS'), False, URL('admin', 'default', 'design/')),
-        (T('TRABAJADORES'), False,
-            URL(
-                'admin', 'default', 'edit//controllers/.py')),
-        (T('UBICACIÓN'), False,
-            URL(
-                'admin', 'default', 'edit//views/')),
-        (T('OPERATIVO'), False,
-            URL(
-                'admin', 'default', 'edit//models/db.py')),
+if auth.user:
+        # El usuario está logueado
+    response.menu = [
+        (T('PEDIDOS'), False, URL('default', 'index')),
+        (T('MIS DATOS'), False, URL('default', 'index')),
+        (T('REPORTES'), False, '#', [
+            (T('ENTREGAS'), False, URL('default', 'index')),
+            (T('TRABAJADORES'), False,
+                URL('default', 'index')),
+            (T('UBICACIÓN'), False,
+                URL('default', 'index')),
+            (T('OPERATIVO'), False,
+                URL('default', 'index')),
+            ]),
+        (T('ADMINISTRACIÓN'), False, '#', [
+            (T('TRABAJADORES'), False, URL('administracion', 'usuarios')),
+            (T('ALMACENES'), False, URL('administracion', 'almacen')),
+            (T('OPERATIVOS'), False, URL('administracion', 'operativo')),
         ]),
-    (T('ADMINISTRACIÓN'), False, '#', [
-        (T('TRABAJADORES'), False, URL('admin', 'default', 'site')),
-        (T('ALMACENES'), False, URL('admin', 'default', 'site')),
-        (T('OPERATIVOS'), False, URL('admin', 'default', 'site')),
-    ]),
-    (T('CONTACTO'), False, URL('admin', 'default', 'site')),
-]
+        (T('CONTACTO'), False, URL('default', 'contacto')),
+    ]
+else:
+    # No hay usuario logueado
+    response.menu = []
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # provide shortcuts for development. you can remove everything below in production
@@ -34,7 +36,5 @@ response.menu = [
 
 if not configuration.get('app.production'):
     _app = request.application
-    response.menu += [
-        
-    ]
+    response.menu += []
 

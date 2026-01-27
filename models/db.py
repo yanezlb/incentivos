@@ -222,6 +222,7 @@ def campos_comunes():
 
 db.define_table('tipo_almacen',
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
 )
 
 db.define_table('almacen',
@@ -237,10 +238,11 @@ db.define_table('almacen',
 
 db.define_table('estatus_operativo',
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
     )
 
 db.define_table('operativo',
-    Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True),
+    Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True, default=1, writable=False),
     Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True),
     Field('fecha_fin_solicitud', 'date', label='Fecha Fin de Solicitud', notnull=True, required=True),
     Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True),
@@ -258,7 +260,10 @@ db.define_table('operativo_combo',
     campos_comunes(),
     format='%(nombre)s'
 )
-
+db.operativo_combo.id_operativo.requires = [
+    IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo'), 
+    IS_NOT_IN_DB(db, 'operativo_combo.id_operativo', error_message='Este operativo ya está asignado a otro combo')
+]
 db.define_table('pedido_operativo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
     Field('id_pedido_operativo',  db.operativo_combo, label='Combo', notnull=True, required=True),

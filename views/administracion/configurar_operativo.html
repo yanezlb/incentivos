@@ -1,0 +1,81 @@
+{{extend 'layout.html'}}
+<a href="{{=URL('administracion','operativo')}}" class="btn btn-primary">
+    <i class="fas fa-arrow-left"></i> Volver
+</a>
+<br><br>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white font-weight-bold">
+        <span>Operativo</span>
+    </div>
+    <div class="card-body">
+        <br><br>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Operativo</th>
+                        <th>Fecha Inicio Solicitud</th>
+                        <th>Fecha Fin Solicitud</th>
+                        <th>Fecha Inicio Entrega</th>
+                        <th>Fecha Fin Entrega</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{=operativo_data.nombre}}</td>
+                        <td>{{=operativo_data.fecha_inicio_solicitud}}</td>
+                        <td>{{=operativo_data.fecha_fin_solicitud}}</td>
+                        <td>{{=operativo_data.fecha_inicio_entrega}}</td>
+                        <td>{{=operativo_data.fecha_fin_entrega}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>Operativo activo</small>
+    </div>
+</div>
+<br>
+<div class="card panel-blue">
+        
+    <div class="card-header bg-primary text-white font-weight-bold">
+        Combo
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <br>
+            {{if len(ope_combo_info) > 0:}}
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cantidad de personas a atender</th>
+                                <th>Venta Máxima</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{=ope_combo_info[0].nombre}}</td>
+                                <td>{{=ope_combo_info[0].cant_personas}}</td>
+                                <td>{{=ope_combo_info[0].venta_maxima}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+   
+            {{else:}}
+                {{=form_operativo_combo}}
+            {{pass}}
+        </div>
+    </div>
+
+    <div class="card-footer bg-white text-muted">
+        <small>-</small>
+    </div>
+    <br>
+</div>

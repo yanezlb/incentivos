@@ -6,8 +6,12 @@
 
 # ---- example index page ----
 def index():
-    response.flash = T("Hello World")
+    response.flash = T("Bienvenido al sistema de incentivos")
     return dict(message=T('Welcome to web2py!'))
+
+def contacto():
+    
+    return dict()
 
 # ---- API (example) -----
 @auth.requires_login()
