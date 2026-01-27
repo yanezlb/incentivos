@@ -13,7 +13,7 @@ def almacen():
     return dict(grid=grid)
 
 
-
+@auth.requires_login()
 def operativo():
     # Lógica para manejar las operaciones CRUD de operativos
     campos = [
@@ -37,7 +37,7 @@ def operativo():
 
     return dict(grid=grid)
 
-
+@auth.requires_login()
 def configurar_operativo():
     # Lógica para manejar las operaciones CRUD de operativos
     registro_id = request.args(0)
@@ -65,10 +65,35 @@ def configurar_operativo():
             ope_combo_info=ope_combo_info
         )
 
-
+@auth.requires_login()
 def usuarios():
     campos = [field for field in db.auth_user if field.name != 'id']
 
     grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos)
 
     return dict(grid=grid)
+
+@auth.requires_login()
+def mis_datos():
+    usuario_id = auth.user_id
+
+    form = SQLFORM.factory(
+            Field('email', requires=[IS_NOT_EMPTY(), IS_EMAIL()], default=db.auth_user(usuario_id).email),
+            Field('telefono_oficina', 'string', default=db.auth_user(usuario_id).telefono_oficina),
+            Field('telefono_celular', 'string', default=db.auth_user(usuario_id).telefono_celular)
+        ).process()
+
+    if form.accepted:
+        user = db.auth_user(usuario_id)
+        correo = form.vars.email
+        oficina = form.vars.telefono_oficina
+        celular = form.vars.telefono_celular
+
+        user.update_record(email=correo, telefono_oficina=oficina, telefono_celular=celular)
+
+        response.flash = '¡Datos guardados!'
+        redirect(URL('administracion', 'mis_datos'))
+    elif form.errors:
+        response.flash = 'El formulario tiene errores'
+
+    return dict(form=form, usuario_data=db.auth_user(usuario_id))

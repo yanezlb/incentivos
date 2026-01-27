@@ -264,9 +264,10 @@ db.operativo_combo.id_operativo.requires = [
     IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo'), 
     IS_NOT_IN_DB(db, 'operativo_combo.id_operativo', error_message='Este operativo ya está asignado a otro combo')
 ]
+
 db.define_table('pedido_operativo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
-    Field('id_pedido_operativo',  db.operativo_combo, label='Combo', notnull=True, required=True),
+    Field('id_operativo_combo',  db.operativo_combo, label='Combo', notnull=True, required=True),
     Field('id_usuario',  db.auth_user, label='Empleado', notnull=True, required=True),
     Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
     campos_comunes()

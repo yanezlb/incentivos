@@ -453,3 +453,35 @@ CREATE TABLE "estado"(
     "nombre" VARCHAR(512) NOT NULL
 );
 success!
+timestamp: 2026-01-27T18:01:45.948280
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_pedido_operativo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "estatus" TEXT NOT NULL,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-01-27T18:03:11.977287
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "estatus" TEXT NOT NULL,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!

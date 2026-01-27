@@ -1,0 +1,81 @@
+{{extend 'layout.html'}}
+<a href="{{=URL('default','index')}}" class="btn btn-primary">
+    <i class="fas fa-arrow-left"></i> Volver
+</a>
+<br><br>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+        <span>Información Laboral</span>
+    </div>
+    <div class="card-body">
+        <br><br>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <tbody>
+                    <tr>
+                        <td><b>Nombre:</b> {{=usuario_data.first_name}} {{=usuario_data.last_name}}</td>
+                        <td><b>Cédula:</b> {{=usuario_data.cedula}}</td>
+                        <td><b>Ente:</b> {{=db.ente(usuario_data.id_ente).nombre or '-'}} </td>
+                        <td><b>Negocio / Filial:</b> {{=db.negocio(usuario_data.id_negocio).nombre or '-'}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Estado:</b> {{=db.estado(usuario_data.id_estado).nombre or '-'}} </td>
+                        <td><b>Localidad:</b> {{=db.localidad(usuario_data.id_localidad).nombre or '-'}}</td>
+                        <td><b>Región distribución:</b> {{=db.region(usuario_data.id_region).nombre or '-'}}</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>-</small>
+    </div>
+</div>
+<br>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+        Información Contacto
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <br>
+            
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Teléfono celular</th>
+                                <th>Teléfono oficina</th>
+                                <th>Correo electrónico</th>
+                            </tr>
+                        </thead>
+                        {{=form.custom.begin}}
+                        <tbody>
+                            <tr>
+                                <td>{{=form.custom.widget.telefono_celular}} <b class="text-default">Ej: 04149999999</b></td>
+                                <td>{{=form.custom.widget.telefono_oficina}} <b class="text-default">Ej: 02129999999</b></td>
+                                <td>{{=form.custom.widget.email}} <b class="text-default">Ej: usuario@ejemplo.com</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <button class="btn btn-primary text-white" type="submit">Actualizar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {{=form.custom.end}}
+                    </table>
+                </div>
+   
+            
+        </div>
+    </div>
+
+    <div class="card-footer bg-white text-muted">
+        <small>-</small>
+    </div>
+    <br>
+</div>
