@@ -7,7 +7,8 @@
 if auth.user:
         # El usuario está logueado
     response.menu = [
-        (T('PEDIDOS'), False, URL('default', 'index')),
+        (T('INICIO'), False, URL('default', 'index')),
+        (T('PEDIDOS'), False, URL('solicitud', 'pedidos')),
         (T('MIS DATOS'), False, URL('administracion', 'mis_datos')),
         (T('REPORTES'), False, '#', [
             (T('ENTREGAS'), False, URL('default', 'index')),

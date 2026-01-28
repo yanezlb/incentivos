@@ -37,6 +37,7 @@ def operativo():
 
     return dict(grid=grid)
 
+
 @auth.requires_login()
 def configurar_operativo():
     # Lógica para manejar las operaciones CRUD de operativos
@@ -72,6 +73,7 @@ def usuarios():
     grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos)
 
     return dict(grid=grid)
+
 
 @auth.requires_login()
 def mis_datos():
