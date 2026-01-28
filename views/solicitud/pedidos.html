@@ -3,6 +3,49 @@
     <i class="fas fa-arrow-left"></i> Volver
 </a>
 <br><br>
+{{
+    estatus = get_estatus_operativo(operativos_vigentes.operativo.id_estatus_operativo)
+}}
+{{ if valida_operativo_pedido(operativos_vigentes.operativo.id, operativos_vigentes.operativo_combo.id, auth.user_id): }}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+        <span>Información Operativo</span>
+    </div>
+    <div class="card-body">
+        <br><br>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <tbody>
+                    <tr>
+                        <td><b>Operativo:</b> {{=operativos_vigentes.operativo.nombre}} - {{=operativos_vigentes.operativo_combo.nombre}}</td>
+                        <td><b>Inicio Solicitud:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_inicio_solicitud)}}</td>
+                        <td><b>Fin Solicitud:</b>  {{=formato_fecha(operativos_vigentes.operativo.fecha_fin_solicitud)}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Inicio entrega:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_inicio_entrega)}}</td>
+                        <td><b>Fin entrega:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_fin_entrega)}}</td>
+                        <td><b>Estatus:</b> <span class="badge badge-{{= 'success' if estatus == 'REGISTRADO' else 'danger'}}">{{=estatus}}</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <br>
+                            <form action="{{=URL('solicitud', 'confirmar_pedido_entregado_registrado', vars={'id_operativo': operativos_vigentes.operativo.id, 'id_operativo_combo': operativos_vigentes.operativo_combo.id, 'id_usuario': auth.user_id})}}" method="post">
+                                <button type="submit" class="btn btn-primary">Confirmar pedido</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>-</small>
+    </div>
+</div>
+{{ pass }}
+<br><br><br>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
         <span>Pedidos</span>
@@ -13,6 +56,7 @@
             {{=grid}}
         </div>
         <br>
+        
     </div>
     
     <div class="card-footer bg-white text-muted">
