@@ -125,6 +125,7 @@
 'Enter an integer': 'Introduzca un entero',
 'ENTREGAS': 'ENTREGAS',
 'Errors': 'Errores',
+'Errors in form, please check it out.': 'Errors in form, please check it out.',
 'Estado': 'Estado',
 'Estatus operativo': 'Estatus operativo',
 'Este operativo ya está asignado a otro combo': 'Este operativo ya está asignado a otro combo',

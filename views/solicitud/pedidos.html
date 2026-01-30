@@ -2,11 +2,11 @@
 <a href="{{=URL('default','index')}}" class="btn btn-secondary">
     <i class="fas fa-arrow-left"></i> Volver
 </a>
-<br><br>
 {{
     estatus = get_estatus_operativo(operativos_vigentes.operativo.id_estatus_operativo)
 }}
 {{ if valida_operativo_pedido(operativos_vigentes.operativo.id, operativos_vigentes.operativo_combo.id, auth.user_id): }}
+<br><br>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
         <span>Información Operativo</span>
@@ -29,7 +29,7 @@
                     <tr>
                         <td colspan="3" class="text-center">
                             <br>
-                            <form action="{{=URL('solicitud', 'confirmar_pedido_entregado_registrado', vars={'id_operativo': operativos_vigentes.operativo.id, 'id_operativo_combo': operativos_vigentes.operativo_combo.id, 'id_usuario': auth.user_id})}}" method="post">
+                            <form action="{{=URL('solicitud', 'confirmar_pedido_registrado', vars={'id_operativo': operativos_vigentes.operativo.id, 'id_operativo_combo': operativos_vigentes.operativo_combo.id, 'id_usuario': auth.user_id})}}" method="post">
                                 <button type="submit" class="btn btn-primary">Confirmar pedido</button>
                             </form>
                         </td>
@@ -41,7 +41,7 @@
     </div>
     
     <div class="card-footer bg-white text-muted">
-        <small>-</small>
+        <small>&nbsp;</small>
     </div>
 </div>
 {{ pass }}
@@ -60,6 +60,6 @@
     </div>
     
     <div class="card-footer bg-white text-muted">
-        <small>-</small>
+        <small>&nbsp;</small>
     </div>
 </div>

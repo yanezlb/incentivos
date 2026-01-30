@@ -9,6 +9,7 @@ if auth.user:
     response.menu = [
         (T('INICIO'), False, URL('default', 'index')),
         (T('PEDIDOS'), False, URL('solicitud', 'pedidos')),
+        (T('ENTREGAS'), False, URL('solicitud', 'entregas')),
         (T('MIS DATOS'), False, URL('administracion', 'mis_datos')),
         (T('REPORTES'), False, '#', [
             (T('ENTREGAS'), False, URL('default', 'index')),

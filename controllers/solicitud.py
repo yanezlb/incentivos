@@ -37,7 +37,6 @@ def pedidos():
     qry = (db.pedido_operativo.id_usuario == auth.user_id)
     grid = SQLFORM.grid(qry, csv=False, 
                         fields=campos, 
-                        links=links, 
                         details=False,
                         editable=False,  
                         deletable=False,
@@ -64,10 +63,10 @@ def confirmar_pedido_entregado():
         # Lógica para confirmar el pedido
         pedido.update_record(estatus='ENTREGADO')
 
-    redirect(URL('solicitud', 'pedidos'))
+    redirect(URL('solicitud', 'entregas'))
 
 
-def confirmar_pedido_entregado_registrado():
+def confirmar_pedido_registrado():
     """
     Controlador para registrar un pedido operativo con estatus REGISTRADO.
     """
@@ -101,16 +100,14 @@ def entregas():
     Permite listar, agregar, editar y eliminar entregas.
     """
 
-    # Obtener la fecha actual (solo fecha, sin hora)
-    hoy = datetime.today().date()
+    # 1. Formulario para capturar la cédula
+    form = SQLFORM.factory(
+        Field('cedula', 'string', label='Cédula', requires=IS_NOT_EMPTY())
+    )
 
-    # Consulta a la tabla operativo con join a operativo_combo, filtrando
-    # por intervalo [fecha_inicio_solicitud, fecha_fin_solicitud] que incluya hoy
-    operativos_vigentes = db(
-        (db.operativo.fecha_inicio_solicitud <= hoy) &
-        (db.operativo.fecha_fin_solicitud >= hoy) &
-        (db.operativo.id == db.operativo_combo.id_operativo)
-    ).select(db.operativo.ALL, db.operativo_combo.ALL).first()
+    filtro = None
+    if form.process(formname='form_cedula').accepted:
+        filtro = form.vars.cedula
 
     links = [
         dict(
@@ -119,22 +116,28 @@ def entregas():
                 'Entregar',
                 _class='btn btn-primary',
                 _type='submit',
-                _href=URL('solicitud', 'confirmar_pedido_entregado', args=[row.id])
-            ) if row.estatus[0] != 'ENTREGADO' else ''
+                _href=URL('solicitud', 'confirmar_pedido_entregado', args=[row.pedido_operativo.id])
+            ) if row.pedido_operativo.estatus[0] != 'ENTREGADO' else ''
         )
     ]
     
-    # Lógica para manejar las operaciones CRUD de pedidos
+    # 2. Consulta con join a auth_user usando id_usuario
     campos = [field for field in db.pedido_operativo if field.name != 'id']
-    qry = (db.pedido_operativo.id_usuario == auth.user_id)
-    grid = SQLFORM.grid(qry, csv=False, 
-                        fields=campos, 
-                        links=links, 
+    campos += [db.auth_user.first_name, db.auth_user.last_name]
+    # join lógico: pedido_operativo.id_usuario == auth_user.id
+    qry = (db.pedido_operativo.id_usuario == db.auth_user.id)
+    if filtro:
+        # Si tienes campo cedula en auth_user, filtra por ahí
+        qry &= (db.auth_user.cedula == filtro)
+
+    grid = SQLFORM.grid(qry,
+                        csv=False,
+                        fields=campos,
+                        links=links,
                         details=False,
-                        editable=False,  
+                        editable=False,
                         deletable=False,
                         create=False,
                         searchable=False)
 
-    # Devolvemos también los operativos vigentes por si se necesitan en la vista
-    return dict(grid=grid, operativos_vigentes=operativos_vigentes)
+    return dict(grid=grid, form=form)

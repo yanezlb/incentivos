@@ -5,6 +5,27 @@
 <br><br>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+        <span>Cargar trabajadores</span>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            {{=form.custom.begin}}
+                <b class="mr-2">{{=form.custom.label.archivo_excel}}:</b>
+                <div class="mr-2">{{=form.custom.widget.archivo_excel}}</div>
+                <br>
+                <div>{{=form.custom.submit}}</div>
+            {{=form.custom.end}}
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>&nbsp;</small>
+    </div>
+</div>
+<br><br>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
         <span>Trabajadores</span>
     </div>
     <div class="card-body">
@@ -16,7 +37,7 @@
     </div>
     
     <div class="card-footer bg-white text-muted">
-        <small>-</small>
+        <small>&nbsp;</small>
     </div>
 </div>
 

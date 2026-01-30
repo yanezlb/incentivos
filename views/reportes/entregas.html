@@ -5,24 +5,13 @@
 <br><br>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
-        <span>Pedidos</span>
+        <span>Entregas</span>
     </div>
     <div class="card-body">
         <br>
         <div class="d-flex align-items-center">
-            {{=form.custom.begin}}
-                <b class="mr-2">{{=form.custom.label.cedula}}:</b>
-                <div class="mr-2">{{=form.custom.widget.cedula}}</div>
-                <br>
-                <div>{{=form.custom.submit}}</div>
-            {{=form.custom.end}}
-        </div>
-        <br>
-        <div class="table-responsive">
             {{=grid}}
         </div>
-        <br>
-        
     </div>
     
     <div class="card-footer bg-white text-muted">
