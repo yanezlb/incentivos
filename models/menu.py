@@ -12,13 +12,14 @@ if auth.user:
         (T('ENTREGAS'), False, URL('solicitud', 'entregas')),
         (T('MIS DATOS'), False, URL('administracion', 'mis_datos')),
         (T('REPORTES'), False, '#', [
-            (T('ENTREGAS'), False, URL('default', 'index')),
+            (T('PEDIDOS'), False, URL('reportes', 'pedidos')),
+            (T('ENTREGAS'), False, URL('reportes', 'entregas')),
             (T('TRABAJADORES'), False,
-                URL('default', 'index')),
+                URL('reportes', 'trabajadores')),
             (T('UBICACIÓN'), False,
-                URL('default', 'index')),
+                URL('reportes', 'ubicacion')),
             (T('OPERATIVO'), False,
-                URL('default', 'index')),
+                URL('reportes', 'operativos')),
             ]),
         (T('ADMINISTRACIÓN'), False, '#', [
             (T('TRABAJADORES'), False, URL('administracion', 'usuarios')),

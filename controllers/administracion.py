@@ -174,7 +174,7 @@ def usuarios():
         
         try:
             # Llamamos a la lógica de procesamiento
-            resultado = procesar_excel_logic(ruta_completa)
+            resultado = procesar_excel_logica(ruta_completa)
             response.flash = f"Carga exitosa: {resultado} registros procesados."
         except Exception as e:
             response.flash = f"Error en la carga: {str(e)}"
@@ -187,14 +187,11 @@ def usuarios():
     return dict(form=form, grid=grid)
 
 
-def procesar_excel_logic(ruta):
+def procesar_excel_logica(ruta):
     df = pd.read_excel(ruta)
     conteo = 0
     print(df.columns)
     for _, fila in df.iterrows():
-        # 3. Búsqueda de IDs en tablas maestras
-        # Nota: Ajusta 'db.tabla.campo' según tus nombres reales en models/db.py
-        print(fila['Region Centro de Acopio']) 
         # Ejemplo para Región
         reg = db(db.region.nombre == fila['Region Centro de Acopio']).select().first()
         # Ejemplo para Estado
@@ -205,7 +202,7 @@ def procesar_excel_logic(ruta):
 
         # 4. Insert en auth_user
         if reg and est: # Validación mínima de que existen las maestras
-            db.auth_user.insert(
+            db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'],
                 first_name = fila['Nombre y Apellido'].split()[0],
                 last_name = fila['Nombre y Apellido'].split()[1],
                 # email = fila['Email'],

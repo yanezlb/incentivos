@@ -272,3 +272,4 @@ db.define_table('pedido_operativo',
     Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
     campos_comunes()
 )
+db.pedido_operativo.estatus.represent = lambda valor, fila: XML(get_badge_estatus(valor))

@@ -123,7 +123,7 @@ def entregas():
     
     # 2. Consulta con join a auth_user usando id_usuario
     campos = [field for field in db.pedido_operativo if field.name != 'id']
-    campos += [db.auth_user.first_name, db.auth_user.last_name]
+    campos += [db.auth_user.cedula]
     # join lógico: pedido_operativo.id_usuario == auth_user.id
     qry = (db.pedido_operativo.id_usuario == db.auth_user.id)
     if filtro:
