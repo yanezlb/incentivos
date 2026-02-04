@@ -1,8 +1,10 @@
 {{extend 'layout.html'}}
-<a href="{{=URL('default','index')}}" class="btn btn-secondary">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>
-<br><br>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Administración</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Operativos</li>
+  </ol>
+</nav>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
         <span>Operativos</span>
