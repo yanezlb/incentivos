@@ -1,35 +1,41 @@
 {{extend 'layout.html'}}
+<!-- 
 <a href="{{=URL('default','index')}}" class="btn btn-secondary">
     <i class="fas fa-arrow-left"></i> Volver
 </a>
-{{
-    estatus = get_estatus_operativo(operativos_vigentes.operativo.id_estatus_operativo)
+-->
+{{  
+    estatus = ''
+    if operativo_vigente:
+        estatus = get_estatus_operativo(operativo_vigente.operativo.id_estatus_operativo)
+    pass
 }}
-{{ if valida_operativo_pedido(operativos_vigentes.operativo.id, operativos_vigentes.operativo_combo.id, auth.user_id): }}
+{{ if operativo_vigente and valida_operativo_pedido(operativo_vigente.operativo.id, operativo_vigente.operativo_combo.id, auth.user_id): }}
 <br><br>
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
         <span>Información Operativo</span>
     </div>
+    {{=operativo_vigente}}
     <div class="card-body">
         <br><br>
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <tbody>
                     <tr>
-                        <td><b>Operativo:</b> {{=operativos_vigentes.operativo.nombre}} - {{=operativos_vigentes.operativo_combo.nombre}}</td>
-                        <td><b>Inicio Solicitud:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_inicio_solicitud)}}</td>
-                        <td><b>Fin Solicitud:</b>  {{=formato_fecha(operativos_vigentes.operativo.fecha_fin_solicitud)}}</td>
+                        <td><b>Operativo:</b> {{=operativo_vigente.operativo.nombre}} - {{=operativo_vigente.operativo_combo.nombre}}</td>
+                        <td><b>Inicio Solicitud:</b> {{=formato_fecha(operativo_vigente.operativo.fecha_inicio_solicitud)}}</td>
+                        <td><b>Fin Solicitud:</b>  {{=formato_fecha(operativo_vigente.operativo.fecha_fin_solicitud)}}</td>
                     </tr>
                     <tr>
-                        <td><b>Inicio entrega:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_inicio_entrega)}}</td>
-                        <td><b>Fin entrega:</b> {{=formato_fecha(operativos_vigentes.operativo.fecha_fin_entrega)}}</td>
-                        <td><b>Estatus:</b> <span class="badge badge-{{= 'success' if estatus == 'REGISTRADO' else 'danger'}}">{{=estatus}}</span></td>
+                        <td><b>Inicio entrega:</b> {{=formato_fecha(operativo_vigente.operativo.fecha_inicio_entrega)}}</td>
+                        <td><b>Fin entrega:</b> {{=formato_fecha(operativo_vigente.operativo.fecha_fin_entrega)}}</td>
+                        <td><b>Estatus:</b> <span class="badge badge-{{= 'danger' if estatus == 'REGISTRADO' else 'success'}}">{{=estatus}}</span></td>
                     </tr>
                     <tr>
                         <td colspan="3" class="text-center">
                             <br>
-                            <form action="{{=URL('solicitud', 'confirmar_pedido_registrado', vars={'id_operativo': operativos_vigentes.operativo.id, 'id_operativo_combo': operativos_vigentes.operativo_combo.id, 'id_usuario': auth.user_id})}}" method="post">
+                            <form action="{{=URL('solicitud', 'confirmar_pedido_registrado', vars={'id_operativo': operativo_vigente.operativo.id, 'id_operativo_combo': operativo_vigente.operativo_combo.id, 'id_usuario': auth.user_id})}}" method="post">
                                 <button type="submit" class="btn btn-primary">Confirmar pedido</button>
                             </form>
                         </td>

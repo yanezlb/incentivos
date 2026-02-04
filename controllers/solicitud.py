@@ -14,7 +14,7 @@ def pedidos():
 
     # Consulta a la tabla operativo con join a operativo_combo, filtrando
     # por intervalo [fecha_inicio_solicitud, fecha_fin_solicitud] que incluya hoy
-    operativos_vigentes = db(
+    operativo_vigente = db(
         (db.operativo.fecha_inicio_solicitud <= hoy) &
         (db.operativo.fecha_fin_solicitud >= hoy) &
         (db.operativo.id == db.operativo_combo.id_operativo)
@@ -44,7 +44,7 @@ def pedidos():
                         searchable=False)
 
     # Devolvemos también los operativos vigentes por si se necesitan en la vista
-    return dict(grid=grid, operativos_vigentes=operativos_vigentes)
+    return dict(grid=grid, operativo_vigente=operativo_vigente)
 
 
 def get_estatus(lista):
