@@ -30,18 +30,18 @@ def operativo():
         dict(
             header='', # Título de la columna
             body=lambda row: A('Configurar', 
-                               _class='button btn btn-default btn-secondary', 
+                               _class='button btn btn-primary', 
                                _href=URL('configurar_operativo', args=[row.id]))
         ),
         dict(
             header='', # Título de la columna
             body=lambda row: A('Cargar x lotes', 
-                               _class='button btn btn-default btn-secondary', 
+                               _class='button btn btn-success', 
                                _href=URL('administracion', 'cargar_lotes', args=[row.id]))
         )
     ]
 
-    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links)
+    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links, deletable=False)
 
     return dict(grid=grid)
 

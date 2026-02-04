@@ -19,5 +19,36 @@
         <small>-</small>
     </div>
 </div>
+<script>
+{{ if request.args(0)=='new': }}
+
+document.getElementById("exclusiones_trabajador_id_employee").readOnly = true;
+
+buscar_nombre();
+
+function buscar_nombre(){
+    $.ajax({
+        type: "POST",
+        url : '{{=URL('herramientas','buscar_nombre_trabajador')}}',
+        data: {
+                ID: document.getElementById("exclusiones_trabajador_id_employee").value,
+        },
+        success: function(resultado) {
+            if (resultado == ""){
+                alert("error");
+            }else{
+                arr_res = resultado.split("|");
+
+                document.getElementById("nombre_trabajador").innerHTML = arr_res[1];
+                document.getElementById("cedula_trabajador").value = arr_res[0];    
+
+                
+            }
+        }
+    }); 
+}
+
+{{ pass }}
+</script>
 
 
