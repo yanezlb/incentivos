@@ -266,6 +266,7 @@
 'Registration needs verification': 'Registration needs verification',
 'Registration successful': 'Registro con éxito',
 'Región': 'Región',
+'Región de Acopio': 'Región de Acopio',
 'Remember me (for 30 days)': 'Recuérdame (durante 30 días)',
 'REPORTES': 'REPORTES',
 'Request reset password': 'Solicitar reinicio de contraseña',

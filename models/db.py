@@ -104,11 +104,13 @@ db.define_table('ente',
 )
 
 db.define_table('negocio',
+    Field('id_ente', db.ente, label='Ente', notnull=True, required=True),
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
     format='%(nombre)s'
 )
 
 db.define_table('localidad',
+    Field('id_negocio', db.negocio, label='Negocio', notnull=True, required=True),  
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
     format='%(nombre)s'
 )
@@ -118,21 +120,33 @@ db.define_table('region',
     format='%(nombre)s'
 )
 
-db.define_table('parroquia',
-    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
-    format='%(nombre)s'
-)
-
-db.define_table('municipio',
-    Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),
+db.define_table('region_acopio',
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
     format='%(nombre)s'
 )
 
 db.define_table('estado',
+    Field('id_region', db.region, label='Región', notnull=True, required=True),
+    Field('id_region_acopio', db.region_acopio, label='Región de Acopio', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True, requires=IS_UPPER(), compute=lambda r: r.nombre.upper()),
+    Field('iso', 'string', label='ISO', notnull=True, required=True),
+    format='%(nombre)s'
+)
+db.estado.nombre.represent = lambda value, row: value.upper() if value else ""
+
+db.define_table('municipio',
+    Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
     format='%(nombre)s'
 )
+db.municipio.nombre.represent = lambda value, row: value.upper() if value else ""
+
+db.define_table('parroquia',
+    Field('id_municipio', db.municipio, label='Municipio', notnull=True, required=True),
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    format='%(nombre)s'
+)
+db.parroquia.nombre.represent = lambda value, row: value.upper() if value else ""
 
 auth.settings.extra_fields["auth_user"] = [
     Field('cedula', 'integer', label='CI'),
@@ -227,6 +241,7 @@ db.define_table('tipo_almacen',
 
 db.define_table('almacen',
     Field('id_region', db.region, label='Región', notnull=True, required=True),
+    Field('id_region_acopio', db.region_acopio, label='Región de Acopio', notnull=True, required=True),
     Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
     Field('id_municipio', db.municipio, label='Municipio', notnull=True, required=True),
     Field('id_parroquia', db.parroquia, label='Parroquia', notnull=True, required=True),

@@ -145,6 +145,10 @@ def ubicacion():
 
 @auth.requires_login()
 def operativos():
+    # Cambio de columnas para ocultar los ID en la vista
+    db.pedido_operativo.id.readable = False
+    db.auth_user.id.readable = False
+
     grid = SQLFORM.grid(((db.pedido_operativo.id_usuario == db.auth_user.id)), csv=False, create=False, editable=False, deletable=False)
 
     # 1. Total global de pedidos

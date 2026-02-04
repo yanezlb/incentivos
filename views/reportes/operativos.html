@@ -45,9 +45,9 @@
                                     <tbody>
                                         {{for negocio in negocios:}}
                                         <tr>
-                                            <td>{{=db.operativo(ente.pedido_operativo.id_operativo).nombre}}</td>
+                                            <td>{{=db.operativo(negocio.pedido_operativo.id_operativo).nombre}}</td>
                                             <td>{{=db.negocio(negocio.auth_user.id_negocio).nombre}}</td>
-                                            <td>{{=XML(get_badge_estatus(ente.pedido_operativo.estatus))}}</td>
+                                            <td>{{=XML(get_badge_estatus(negocio.pedido_operativo.estatus))}}</td>
                                             <td align="right">{{=negocio._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
@@ -61,9 +61,9 @@
                                     <tbody>
                                         {{for region in regiones:}}
                                         <tr>
-                                            <td>{{=db.operativo(ente.pedido_operativo.id_operativo).nombre}}</td>
+                                            <td>{{=db.operativo(region.pedido_operativo.id_operativo).nombre}}</td>
                                             <td>{{=db.region(region.auth_user.id_region).nombre}}</td>
-                                            <td>{{=XML(get_badge_estatus(limpiar_texto(ente.pedido_operativo.estatus)))}}</td>
+                                            <td>{{=XML(get_badge_estatus(region.pedido_operativo.estatus))}}</td>
                                             <td align="right">{{=region._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
@@ -77,9 +77,9 @@
                                     <tbody>
                                         {{for estado in estados:}}
                                         <tr>
-                                            <td>{{=db.operativo(ente.pedido_operativo.id_operativo).nombre}}</td>
+                                            <td>{{=db.operativo(estado.pedido_operativo.id_operativo).nombre}}</td>
                                             <td>{{=db.estado(estado.auth_user.id_estado).nombre}}</td>
-                                            <td>{{=XML(get_badge_estatus(limpiar_texto(ente.pedido_operativo.estatus)))}}</td>
+                                            <td>{{=XML(get_badge_estatus(estado.pedido_operativo.estatus))}}</td>
                                             <td align="right">{{=estado._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}

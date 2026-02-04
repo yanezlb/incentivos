@@ -485,3 +485,97 @@ CREATE TABLE "pedido_operativo"(
     "is_active" CHAR(1)
 );
 success!
+timestamp: 2026-02-03T22:42:48.555698
+ALTER TABLE "estado" ADD "id_region" INTEGER REFERENCES "region" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-02-03T23:09:08.823613
+ALTER TABLE "negocio" ADD "id_ente" INTEGER REFERENCES "ente" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-02-03T23:09:10.800128
+ALTER TABLE "negocio" ADD "id_ente" INTEGER REFERENCES "ente" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-02-03T23:11:28.299041
+CREATE TABLE "negocio"(
+    "id" SERIAL PRIMARY KEY,
+    "id_ente" INTEGER REFERENCES "ente" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+timestamp: 2026-02-03T23:13:57.199526
+CREATE TABLE "negocio"(
+    "id" SERIAL PRIMARY KEY,
+    "id_ente" INTEGER REFERENCES "ente" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:13:57.210559
+CREATE TABLE "localidad"(
+    "id" SERIAL PRIMARY KEY,
+    "id_negocio" INTEGER REFERENCES "negocio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:13:57.216966
+CREATE TABLE "estado"(
+    "id" SERIAL PRIMARY KEY,
+    "id_region" INTEGER REFERENCES "region" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:13:57.220522
+CREATE TABLE "municipio"(
+    "id" SERIAL PRIMARY KEY,
+    "id_estado" INTEGER REFERENCES "estado" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:13:57.224041
+CREATE TABLE "parroquia"(
+    "id" SERIAL PRIMARY KEY,
+    "id_municipio" INTEGER REFERENCES "municipio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:27:56.483264
+CREATE TABLE "estado"(
+    "id" SERIAL PRIMARY KEY,
+    "id_region" INTEGER REFERENCES "region" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:29:16.552204
+ALTER TABLE "estado" ADD "iso" VARCHAR(512) NOT NULL;
+success!
+timestamp: 2026-02-03T23:45:23.348081
+CREATE TABLE "region_acopio"(
+    "id" SERIAL PRIMARY KEY,
+    "nombre" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:50:59.883478
+CREATE TABLE "estado"(
+    "id" SERIAL PRIMARY KEY,
+    "id_region" INTEGER REFERENCES "region" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_region_acopio" INTEGER REFERENCES "region_acopio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL,
+    "iso" VARCHAR(512) NOT NULL
+);
+success!
+timestamp: 2026-02-03T23:53:25.587999
+ALTER TABLE "almacen" ADD "id_region_acopio" INTEGER REFERENCES "region_acopio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-02-03T23:54:01.559955
+CREATE TABLE "almacen"(
+    "id" SERIAL PRIMARY KEY,
+    "id_region" INTEGER REFERENCES "region" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_region_acopio" INTEGER REFERENCES "region_acopio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_estado" INTEGER REFERENCES "estado" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_municipio" INTEGER REFERENCES "municipio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_parroquia" INTEGER REFERENCES "parroquia" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_tipo_almacen" INTEGER REFERENCES "tipo_almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "nombre" VARCHAR(512) NOT NULL,
+    "direccion" TEXT NOT NULL,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
