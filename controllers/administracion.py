@@ -36,7 +36,7 @@ def operativo():
         dict(
             header='', # Título de la columna
             body=lambda row: A('Cargar x lotes', 
-                               _class='button btn btn-success', 
+                               _class='button btn btn-primary', 
                                _href=URL('administracion', 'cargar_lotes', args=[row.id]))
         )
     ]

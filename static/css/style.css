@@ -1,0 +1,484 @@
+/*  PLANTILLA DE MAQUETACIÓN  PARA APLICACIONES WEB IMPLEMENTADAS EN PDVSA.
+Archivo: style.css
+Función: Implementar los estilos para todos los elementos de la plantilla WEB
+Version: 2.9
+Fecha de Creación: 06/08/2024
+Fecha de Actualización: 26/02/2025
+Autor: PDVSA Dirección Ejecutiva de Automatización, Informática y Telecomunicaciones - 
+    Gerencia corporativa de Investigación y Desarrollo GALBA -
+       Arquitectura, Metodologías y Herramientas */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../font/Montserrat-VariableFont_wght.ttf') format('truetype'); /* Add your variable font */
+    font-weight: 100 900; /* Use weight range for variable fonts */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../font/Montserrat-Italic-VariableFont_wght.ttf') format('truetype'); /* Italic variant */
+    font-weight: 100 900; /* Use weight range for variable fonts */
+    font-style: italic;
+}
+
+@media (min-width: 1500px) {
+    .icon-input {
+        font-size:20px;
+        margin-left: 7px;
+    }
+}
+:root {
+    /*Paleta de colores*/
+    --rojo1: #CD1C29;
+    --gris1: #C0C3CE;
+    --gris2: #444444;
+    --blanco1: #FFFFFF;
+    }
+a {
+    text-decoration: none;
+}
+li {
+    list-style: none;
+}
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+.wrapper {
+    display: flex;
+}
+.main {
+    min-height: calc(100vh - 6.8rem);
+    transition: all 0.2s ease-in-out;
+}
+#sidebar.minimized {
+    width: 50px; /* Ancho minimizado */
+}
+#sidebar:not(.expand) .sidebar-logo, #sidebar:not(.expand) a.sidebar-link span, #sidebar:not(.expand) #titulo-menu, #sidebar:not(.expand) #m-usuario, #sidebar .icon-preview3 {
+    display: none;
+}
+#sidebar:not(.expand) .icon-preview3 {
+    display: block!important;
+}
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    color: rgba(255, 255, 255, 1);
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+.sidebar-link i {
+    font-size: 3.1rem;
+    margin-right: .75rem;
+}
+.sidebar-item {
+    position: relative;
+}
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+/* Add to style.css */
+#sidebar:not(.expand) .sidebar-nav {
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+#sidebar:not(.expand) .sidebar-dropdown {
+    position: static !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: none !important;
+    animation: none !important;
+}
+
+#sidebar:not(.expand) .sidebar-dropdown.show {
+    display: block !important;
+    transform: none !important;
+}
+
+#sidebar:not(.expand) .sidebar-dropdown .sidebar-link {
+    padding: 0.75rem !important;
+    justify-content: center !important;
+    border-left: none !important;
+}
+
+#sidebar:not(.expand) .sidebar-dropdown .material-icons {
+    font-size: 1.4rem !important;
+    margin: 0 !important;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all 0.25s ease-in-out;
+    background-image: url('../img/bg-menu-lateral.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+}
+#sidebar:not(.expand) #the-hr {
+    margin-top: 1.45rem;
+}
+#sidebar:not(.expand) .sidebar-item {
+    margin-top: 0.15rem;
+}
+#sidebar:not(.expand) #the-avenger {
+    margin-top: 0.7rem;
+}
+#sidebar:not(.expand) #the-pride {
+    margin-top: 0.3rem;
+}#sidebar:not(.expand) #the-exe {
+    margin-top: .2rem;
+}#sidebar:not(.expand) #the-ton {
+    margin-top: .25rem;
+}#sidebar:not(.expand) #the-bond {
+    margin-top: .25rem;
+}#sidebar:not(.expand) #the-strike {
+    margin-top: .25rem;
+}#sidebar:not(.expand) #the-rear {
+    margin-top: .15rem;
+}
+#sidebar.expand {
+    width: 17.7rem;
+    min-width: 17.7rem;
+}
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+a.sidebar-link {
+    padding: 0.625rem 1.625rem;
+    color: #000;
+    display: block;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    cursor: pointer
+}
+.sidebar-link i {
+    font-size: 1.55rem;
+    margin-right: 0.75rem;
+}
+a.sidebar-link:hover {
+    background-color: rgba(0, 0, 0, 0.165);
+    color:var(--rojo1);
+}
+.sidebar-item {
+    position: relative;
+}
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    left: 70px;
+    min-width: 15rem;
+    display: none;
+}
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 0.075rem 0.075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all 0.2s ease-out;
+}
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all 0.2s ease-out;
+}
+.header-h {
+    height: 6.8rem;
+    background-size: cover; /* O 'contain', según lo que necesites */
+    background-repeat: no-repeat;
+}
+.bg-imagen-main {
+    background-image: url(../img/fondo-main.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.btn-rojo1 {
+    background-color: rgba(205,28,41,1);
+    color: rgba(255, 255, 255, 1);
+}
+.btn-gris2 {
+    background-color: rgba(68,68,68,1);
+    color: rgba(255, 255, 255, 1);
+}
+.btn-gris1 {
+    background-color: rgba(192,195,206,1);
+}
+.btn-blanco1 {
+    background-color: rgba(255, 255, 255, 1);
+}
+.dropdown-menu {
+    border: none; /* Remove border if any */
+}
+.dropdown-item {
+    display: flex; /* Enable flexbox for dropdown items */
+    align-items: center; /* Center items vertically */
+}
+.dropdown-item:hover {
+background-color: var(--gris1);
+}
+.material-icons {
+    margin-right: 8px; /* Add some space between icon and text */
+}
+.imagen_login{
+    margin-top: 10%;
+    align-items: center;
+}
+.contenedor-principal{
+    margin: 0;
+    padding: 0;
+}
+.encabezado-izq {
+    display: flex;
+    align-items: center;
+    height: 50px;  
+}
+.encabezado-der {
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+}
+.encabezado-der-up {
+    display: flex;
+    justify-content: flex-end;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+} 
+.encabezado-der-bottom {
+    height: 50px;
+    margin: 0;
+    padding: 0;
+}
+.encabezado-der-up img {
+    max-height: 5%;
+    width:auto;
+    margin-right: 0px;
+}
+.encabezado-izq img {
+    max-width: 80%;
+}
+a{
+    color: black;
+}
+.header {
+    text-align: left; 
+    background-size: cover; 
+    background-position: center; 
+    height: 100px; 
+}
+.left-section {
+    flex: 2;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    padding: 5px;
+    height: 70vh; 
+}
+.right-section {
+    flex: 7;
+    background-size:1500px 800px; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    padding: 5px;
+    height: 80vh;
+    margin-top: 5px;
+}
+section {
+    width: 23%; 
+    height: 553px; 
+    background-color: var(--blanco1); 
+    margin: auto; 
+    padding: 0px; 
+}
+.container.flex {
+    background-image: url(../images/fondologo.jpg);  
+    background-size: cover; 
+    background-position: center; 
+    height: 200px; 
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;    
+}
+.fondo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 7%; 
+}
+.icon-preview {
+    display: flex;
+    align-items: left; /* Alinear verticalmente el icono y el input */
+    justify-content: left; /* Centrar el contenido dentro del icon-preview */
+}
+.nombre-aplicacion {
+    position: absolute; /* Position the image absolutely */
+    top: 2.5rem; /* Distance from the top of the container: 40px / 16 */
+    right: 1.25rem; /* Distance from the right of the container: 20px / 16 */
+    width: 25rem; /* Set the width as needed: 400px / 16 */
+    z-index: 9; /* Ensure it is above other elements */
+}
+.imagen-cintillo {
+    position: absolute; /* Posiciona la imagen de forma absoluta */
+    top: 0; /* Ajusta la distancia desde la parte superior del contenedor */
+    left: 0; /* Alinea la imagen a la derecha */
+    width: 18.5rem; /* Ajusta el tamaño de la imagen según sea necesario */
+    height: auto; /* Mantiene la proporción de la imagen */
+    z-index: 10; /* Asegúrate de que esté por encima del cintillo */
+}
+.login-footer{
+    font-size: 12px;
+    color: gray;
+}
+.btn-blanco1-usr {
+    display: flex;
+    align-items: center; /* Centrado verticalmente */
+border-radius:9px;
+    text-align: center; /* Asegura que el texto esté centrado */
+    background-color: var(--blanco1); /*Estilos base por Romer Navarrete*/
+    padding: 5px 10px; /* Añadir un poco de padding para que el icono no esté pegado al borde */
+}
+.container {
+    display: flex;
+    position: relative; /* Make the container a positioning context */
+}
+.icon-large {
+    font-size: 1.5rem; /* Relative to the root font size */
+}
+.icon-preview2 {
+    display: flex; /* Utiliza flexbox para alinear los elementos */
+    align-items: center; /* Centra horizontalmente */
+}
+.icon-preview2 img {
+    margin-bottom: 4px; /* Espacio entre la imagen y el texto */
+}
+.icon-input {
+    position: absolute; /* Posicionamiento absoluto para el icono */
+    left: 30px; /* Espacio desde la izquierda */
+    top: 50%; /* Centrar verticalmente */
+    transform: translateY(-50%); /* Ajuste para centrar */
+    background-color: white; /* Fondo blanco para el icono */
+    border-radius: 50%; /* Bordes redondeados */
+    padding: 8px; /* Espacio interno más amplio para que no se vea estirado */
+    font-size: 29px; /* Tamaño del icono */
+    color: var(--gris2); /* Color del icono */
+    z-index: 1; /* Asegura que el icono esté encima del input */
+    width: 28px; /* Ancho fijo para asegurar la forma circular */
+    height: 28px; /* Alto fijo para asegurar la forma circular */
+    display: flex; /* Usar flexbox para centrar el icono */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+}
+#auth_user_password, #auth_user_email, #captcha {
+    width: 90%;
+    box-sizing: border-box;
+    border: #7F7F7F; /* Borde del input */
+    border-radius: 25px; /* Bordes redondeados para el input */
+    font-size: 16px; /* Tamaño de fuente del input */
+    background-color: #E3E3E3; /* Color de fondo */
+    background-repeat: no-repeat; /* No repetir la imagen de fondo */
+    background-size: 32px 32px; /* Ajusta el tamaño del icono aquí */
+    padding: 6px 20px 6px 45px; /* Ajusta padding para texto */
+    margin-left: 0.8rem;
+    box-shadow: none;
+}
+#auth_user_email {
+    background-position: 0px center; /* Icono a la izquierda */
+}
+input[type="password"] {
+    background-position: 0px center; /* Icono a la izquierda */
+}
+.icon-preview3 {
+    display: flex;
+    background-color: transparent; /* Make dropdown menu background transparent */
+    border-radius: 50%; /* Bordes redondeados para que sea un círculo */
+    width: 23px; /* Ajusta el tamaño según sea necesario */
+    height: 23px; /* Ajusta el tamaño según sea necesario */
+    margin-left: 25px; /* Espacio a la izquierda */
+    font-size: 24px; /* Tamaño del ícono */
+    border: none; /* Elimina el borde del botón */
+    padding: 0; /* Elimina el padding para que el botón sea del tamaño del contenedor */
+}
+.nombre-app {
+    position: absolute; /* Position the image absolutely */
+    top: 2.5rem; /* Distance from the top of the container */
+    right: 3.15rem; /* Distance from the right of the container */
+    width: 10rem; /* Set the width as needed */
+    z-index: 9; /* Ensure it is above other elements */
+}
+.form-control:focus {
+/*        box-shadow: 0 0 0 0.2rem rgba(68, 68, 68, 0.25);  Customize color here */
+box-shadow: none;
+        border-color: #444444;
+}
+/* White close buttons for modals */
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 1;
+}
+
+.modal-header .btn-close:hover,
+.modal-header .btn-close:focus {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.75;
+}
+.card-header {
+font-weight:800;background-color: #444444; color: white;}
+.card-body {
+background-color:#FFF;}
+.card {
+border-color:#7F7F7F;}
+.icon-preview.col.s6.m3 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+}
