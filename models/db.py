@@ -178,6 +178,12 @@ auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
+
+# -------------------------------------------------------------------------
+# configure auth policy
+# -------------------------------------------------------------------------
+auth.settings.actions_disabled = ['register', 'profile', 'change_password', 'request_reset_password', 'retrieve_username', 'retrieve_password']
+
 # -------------------------------------------------------------------------  
 # read more at http://dev.w3.org/html5/markup/meta.name.html               
 # -------------------------------------------------------------------------
