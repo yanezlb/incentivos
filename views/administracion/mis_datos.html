@@ -20,9 +20,9 @@
                         <td><b>Negocio / Filial:</b> {{=db.negocio(usuario_data.id_negocio).nombre or '-'}}</td>
                     </tr>
                     <tr>
+                        <td><b>Email:</b> {{=usuario_data.email or '-'}} </td>
                         <td><b>Estado:</b> {{=db.estado(usuario_data.id_estado).nombre or '-'}} </td>
-                        <td><b>Localidad:</b> {{=db.localidad(usuario_data.id_localidad).nombre or '-'}}</td>
-                        <td><b>Región distribución:</b> {{=db.region(usuario_data.id_region).nombre or '-'}}</td>
+                        <td><b>Región centro de acopio:</b> {{=db.region(usuario_data.id_region_acopio).nombre or '-'}}</td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>
@@ -34,49 +34,4 @@
     <div class="card-footer bg-white text-muted">
         <small>&nbsp;</small>
     </div>
-</div>
-<br>
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
-        Información Contacto
-    </div>
-
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <br>
-            
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Teléfono celular</th>
-                                <th>Teléfono oficina</th>
-                                <th>Correo electrónico</th>
-                            </tr>
-                        </thead>
-                        {{=form.custom.begin}}
-                        <tbody>
-                            <tr>
-                                <td>{{=form.custom.widget.telefono_celular}} <b class="text-default">Ej: 04149999999</b></td>
-                                <td>{{=form.custom.widget.telefono_oficina}} <b class="text-default">Ej: 02129999999</b></td>
-                                <td>{{=form.custom.widget.email}} <b class="text-default">Ej: usuario@ejemplo.com</b></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    <button class="btn btn-primary text-white" type="submit">Actualizar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        {{=form.custom.end}}
-                    </table>
-                </div>
-   
-            
-        </div>
-    </div>
-
-    <div class="card-footer bg-white text-muted">
-        <small>&nbsp;</small>
-    </div>
-    <br>
 </div>

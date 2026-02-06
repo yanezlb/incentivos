@@ -152,11 +152,8 @@ auth.settings.extra_fields["auth_user"] = [
     Field('cedula', 'integer', label='CI'),
     Field('id_ente', db.ente, label='Ente', notnull=True, required=True),
     Field('id_negocio', db.negocio, label='Negocio / Filial', notnull=True, required=True),
-    Field('id_region', db.region, label='Región', notnull=True, required=True),
+    Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),
     Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
-    Field('id_localidad', db.localidad, label='Localidad', notnull=True, required=True),
-    Field('telefono_oficina', 'string', label='Telf. Oficina', notnull=True, required=True, length=10, requires=[IS_MATCH('^[0-9]+$', error_message='Solo se permiten números'), IS_LENGTH(maxsize=10, minsize=3)]),
-    Field('telefono_celular', 'string', label='Telf. Celular', notnull=True, required=True, length=10, requires=[IS_MATCH('^[0-9]+$', error_message='Solo se permiten números'), IS_LENGTH(maxsize=10, minsize=3)]),
 ]
 
 auth.define_tables(username=False, signature=False)

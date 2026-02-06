@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+    # -*- coding: utf-8 -*-
 import os
 import pandas as pd
 
@@ -190,16 +190,16 @@ def usuarios():
 def procesar_excel_logica(ruta):
     df = pd.read_excel(ruta)
     conteo = 0
-    print(df.columns)
     for _, fila in df.iterrows():
         # Ejemplo para Región
-        reg = db(db.region.nombre == fila['Region Centro de Acopio']).select().first()
+        reg = db(db.region_acopio.nombre == fila['Region Centro de Acopio']).select().first()
         # Ejemplo para Estado
         est = db(db.estado.nombre == fila['Estado Centro Acopio']).select().first()
         # Clasificaciones (Ente y Negocio)
         ente = db(db.ente.nombre == fila['CLASIF']).select().first()
         negocio = db(db.negocio.nombre == fila['CLASIF 2']).select().first()
-
+        print('REGION CENTRO ACOPIO')
+        print(reg)
         # 4. Insert en auth_user
         if reg and est: # Validación mínima de que existen las maestras
             db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'],
@@ -210,9 +210,8 @@ def procesar_excel_logica(ruta):
                 cedula = fila['Cédula'],
                 id_ente = ente.id if ente else 0,
                 id_negocio = negocio.id if negocio else 0,
-                id_region = reg.id,
+                id_region_acopio = reg.id,
                 id_estado = est.id,
-                id_localidad = 1, # Valor por defecto o mapping adicional
                 telefono_oficina = str('2120000000')[:10],
                 telefono_celular = str('2120000000')[:10],
                 password = db.auth_user.password.validate('admin')[0] # Pass temporal
@@ -226,18 +225,14 @@ def procesar_excel_logica(ruta):
 @auth.requires_login()
 def mis_datos():
     usuario_id = auth.user_id
-
+    """
     form = SQLFORM.factory(
-            Field('email', requires=[IS_NOT_EMPTY(), IS_EMAIL()], default=db.auth_user(usuario_id).email),
-            Field('telefono_oficina', 'string', default=db.auth_user(usuario_id).telefono_oficina),
-            Field('telefono_celular', 'string', default=db.auth_user(usuario_id).telefono_celular)
+            Field('email', requires=[IS_NOT_EMPTY(), IS_EMAIL()], default=db.auth_user(usuario_id).email)
         ).process()
 
     if form.accepted:
         user = db.auth_user(usuario_id)
         correo = form.vars.email
-        oficina = form.vars.telefono_oficina
-        celular = form.vars.telefono_celular
 
         user.update_record(email=correo, telefono_oficina=oficina, telefono_celular=celular)
 
@@ -245,5 +240,7 @@ def mis_datos():
         redirect(URL('administracion', 'mis_datos'))
     elif form.errors:
         response.flash = 'El formulario tiene errores'
+    """
 
-    return dict(form=form, usuario_data=db.auth_user(usuario_id))
+    # return dict(form=form, usuario_data=db.auth_user(usuario_id))
+    return dict(usuario_data=db.auth_user(usuario_id))

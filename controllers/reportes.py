@@ -26,11 +26,6 @@ def pedidos():
         groupby=db.auth_user.id_negocio
     )
 
-    por_region = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'REGISTRADO')).select(
-        db.auth_user.id_region, contador, 
-        groupby=db.auth_user.id_region
-    )
-
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'REGISTRADO')).select(
         db.auth_user.id_estado, contador, 
         groupby=db.auth_user.id_estado
@@ -42,7 +37,6 @@ def pedidos():
         por_operativo=por_operativo,
         entes=por_ente,
         negocios=por_negocio,
-        regiones=por_region,
         estados=por_estado,
         grid=grid
     )
@@ -73,11 +67,6 @@ def entregas():
         groupby=db.auth_user.id_negocio
     )
 
-    por_region = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'ENTREGADO')).select(
-        db.auth_user.id_region, contador, 
-        groupby=db.auth_user.id_region
-    )
-
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'ENTREGADO')).select(
         db.auth_user.id_estado, contador, 
         groupby=db.auth_user.id_estado
@@ -89,7 +78,6 @@ def entregas():
         por_operativo=por_operativo,
         entes=por_ente,
         negocios=por_negocio,
-        regiones=por_region,
         estados=por_estado,
         grid=grid
     )
@@ -97,7 +85,7 @@ def entregas():
 
 @auth.requires_login()
 def trabajadores():
-    grid = SQLFORM.grid(db(db.auth_user), csv=False, deletable=False)
+    grid = SQLFORM.grid(db(db.auth_user), csv=False, deletable=False, create=False)
 
     return dict(grid=grid)
 
@@ -122,11 +110,6 @@ def ubicacion():
         groupby=db.auth_user.id_negocio
     )
 
-    por_region = db(db.auth_user).select(
-        db.auth_user.id_region, contador, 
-        groupby=db.auth_user.id_region
-    )
-
     por_estado = db(db.auth_user).select(
         db.auth_user.id_estado, contador, 
         groupby=db.auth_user.id_estado
@@ -137,7 +120,6 @@ def ubicacion():
         total_pedidos=total_pedidos,
         entes=por_ente,
         negocios=por_negocio,
-        regiones=por_region,
         estados=por_estado,
         grid=grid
     )
@@ -167,11 +149,6 @@ def operativos():
         groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_negocio, db.pedido_operativo.estatus)
     )
 
-    por_region = db((db.pedido_operativo.id_usuario == db.auth_user.id)).select(
-        db.pedido_operativo.id_operativo, db.auth_user.id_region, db.pedido_operativo.estatus, contador,
-        groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_region, db.pedido_operativo.estatus)
-    )
-
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id)).select(
         db.pedido_operativo.id_operativo, db.auth_user.id_estado, db.pedido_operativo.estatus, contador,
         groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_estado, db.pedido_operativo.estatus)
@@ -182,7 +159,6 @@ def operativos():
         total=total,
         entes=por_ente,
         negocios=por_negocio,
-        regiones=por_region,
         estados=por_estado,
         grid=grid
     )
