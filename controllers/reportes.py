@@ -26,6 +26,11 @@ def pedidos():
         groupby=db.auth_user.id_negocio
     )
 
+    por_region_acopio = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'REGISTRADO')).select(
+        db.auth_user.id_region_acopio, contador, 
+        groupby=db.auth_user.id_region_acopio
+    )
+
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'REGISTRADO')).select(
         db.auth_user.id_estado, contador, 
         groupby=db.auth_user.id_estado
@@ -37,6 +42,7 @@ def pedidos():
         por_operativo=por_operativo,
         entes=por_ente,
         negocios=por_negocio,
+        regiones=por_region_acopio,
         estados=por_estado,
         grid=grid
     )
@@ -67,6 +73,12 @@ def entregas():
         groupby=db.auth_user.id_negocio
     )
 
+    por_region_acopio = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'ENTREGADO')).select(
+        db.auth_user.id_region_acopio, contador, 
+        groupby=db.auth_user.id_region_acopio
+    )
+
+
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id) & (db.pedido_operativo.estatus == 'ENTREGADO')).select(
         db.auth_user.id_estado, contador, 
         groupby=db.auth_user.id_estado
@@ -79,6 +91,7 @@ def entregas():
         entes=por_ente,
         negocios=por_negocio,
         estados=por_estado,
+        regiones=por_region_acopio,
         grid=grid
     )
 
@@ -149,6 +162,11 @@ def operativos():
         groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_negocio, db.pedido_operativo.estatus)
     )
 
+    por_region_acopio = db((db.pedido_operativo.id_usuario == db.auth_user.id)).select(
+        db.pedido_operativo.id_operativo, db.auth_user.id_region_acopio, db.pedido_operativo.estatus, contador,
+        groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_region_acopio, db.pedido_operativo.estatus)
+    )
+
     por_estado = db((db.pedido_operativo.id_usuario == db.auth_user.id)).select(
         db.pedido_operativo.id_operativo, db.auth_user.id_estado, db.pedido_operativo.estatus, contador,
         groupby=(db.pedido_operativo.id_operativo, db.auth_user.id_estado, db.pedido_operativo.estatus)
@@ -160,5 +178,6 @@ def operativos():
         entes=por_ente,
         negocios=por_negocio,
         estados=por_estado,
+        regiones=por_region_acopio,
         grid=grid
     )

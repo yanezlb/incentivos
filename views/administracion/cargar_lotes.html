@@ -1,11 +1,14 @@
 {{extend 'layout.html'}}
-<a href="{{=URL('default','index')}}" class="btn btn-primary">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>
-<br><br>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Administración</a></li>
+    <li class="breadcrumb-item"><a href="{{=URL('administracion','operativo')}}">Operativos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Cargar Lotes</li>
+  </ol>
+</nav>
 {{=form.custom.begin}}
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+    <div class="card-header d-flex justify-content-between bg-danger align-items-center text-white font-weight-bold">
         <span>Operativo</span>
     </div>
     <div class="card-body">
@@ -50,7 +53,7 @@
 </div>
 <br>
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold">
+    <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
         Resumen Empleados
     </div>
 
@@ -104,7 +107,7 @@
                                             <tbody>
                                                 {{for region in regiones:}}
                                                 <tr>
-                                                    <td>{{=db.region(region.auth_user.id_region).nombre}}</td>
+                                                    <td>{{=db.region_acopio(region.auth_user.id_region_acopio).nombre}}</td>
                                                     <td align="right">{{=region._extra['COUNT("auth_user"."id")']}}</td>
                                                 </tr>
                                                 {{pass}}

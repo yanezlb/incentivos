@@ -22,6 +22,7 @@
                     <tr>
                         <th>Entes</th>
                         <th>Negocios</th>
+                        <th>Regiones</th>
                         <th>Estados</th>
                     </tr>
                 </thead>
@@ -49,6 +50,20 @@
                                         <tr>
                                             <td>{{=db.negocio(negocio.auth_user.id_negocio).nombre}}</td>
                                             <td align="right">{{=negocio._extra['COUNT("auth_user"."id")']}}</td>
+                                        </tr>
+                                        {{pass}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td> 
+                            <div class="card-body">
+                                <table class="table-bordered">
+                                    <tbody>
+                                        {{for region in regiones:}}
+                                        <tr>
+                                            <td>{{=db.region_acopio(region.auth_user.id_region_acopio).nombre}}</td>
+                                            <td align="right">{{=region._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
                                     </tbody>

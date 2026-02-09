@@ -72,8 +72,8 @@ def cargar_lotes():
 
     # 4. Total agrupado por Región
     por_region = db(db.auth_user).select(
-        db.auth_user.id_region, contador, 
-        groupby=db.auth_user.id_region
+        db.auth_user.id_region_acopio, contador, 
+        groupby=db.auth_user.id_region_acopio
     )
 
     # 5. Total agrupado por Estado

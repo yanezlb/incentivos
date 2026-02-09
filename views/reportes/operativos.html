@@ -64,6 +64,22 @@
                             <div class="card-body">
                                 <table class="table-bordered">
                                     <tbody>
+                                        {{for region in regiones:}}
+                                        <tr>
+                                            <td>{{=db.operativo(region.pedido_operativo.id_operativo).nombre}}</td>
+                                            <td>{{=db.region_acopio(region.auth_user.id_region_acopio).nombre}}</td>
+                                            <td>{{=XML(get_badge_estatus(region.pedido_operativo.estatus))}}</td>
+                                            <td align="right">{{=region._extra['COUNT("auth_user"."id")']}}</td>
+                                        </tr>
+                                        {{pass}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card-body">
+                                <table class="table-bordered">
+                                    <tbody>
                                         {{for estado in estados:}}
                                         <tr>
                                             <td>{{=db.operativo(estado.pedido_operativo.id_operativo).nombre}}</td>
