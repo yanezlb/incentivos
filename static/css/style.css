@@ -139,7 +139,7 @@ a.sidebar-link {
     min-width: 70px;
     z-index: 1000;
     transition: all 0.25s ease-in-out;
-    background-image: url('../img/bg-menu-lateral.png');
+    background-image: url('../images/bg-menu-lateral.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -232,10 +232,9 @@ a.sidebar-link:hover {
     background-repeat: no-repeat;
 }
 .bg-imagen-main {
-    background-image: url(../img/fondo-main.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    /* background-image: url(../img/fondo-main.png); */
+    background: linear-gradient(to bottom, #ffffff, #e0e0e0);
+    height: 100vh; /* Para que ocupe toda la pantalla */  
 }
 .btn-rojo1 {
     background-color: rgba(205,28,41,1);

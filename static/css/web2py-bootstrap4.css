@@ -118,9 +118,9 @@ body {
     margin-bottom: 60px;
 }
 header {
-    -webkit-box-shadow: 0 0 8px 2px #000;
-    -moz-box-shadow: 0 0 8px 2px #000;
-    box-shadow: 0 0 8px 2px #000;
+    -webkit-box-shadow: 0 0 1px 1px #c7c7c7;
+    -moz-box-shadow: 0 0 1px 1px #c7c7c7;
+    box-shadow: 0 0 1px 1px #c7c7c7;
     margin-bottom: 10px;
 }
 html {
