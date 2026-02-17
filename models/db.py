@@ -289,6 +289,7 @@ db.define_table('pedido_operativo',
     Field('id_operativo_combo',  db.operativo_combo, label='Combo', notnull=True, required=True),
     Field('id_usuario',  db.auth_user, label='Empleado', notnull=True, required=True),
     Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
+    Field('observaciones', 'text', label='Observaciones'),
     campos_comunes()
 )
 db.pedido_operativo.estatus.represent = lambda valor, fila: XML(get_badge_estatus(valor))

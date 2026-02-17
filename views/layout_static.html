@@ -96,7 +96,11 @@
             <div class="btn-group mx-3" id="m-usuario">
                 <button class="btn btn-blanco1-usr dropdown-toggle d-flex sidebar-item" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="border: 0; border-radius: 9px;">
                     <i class="fas fa-user"></i>
-                    <span class="d-none d-md-inline">&nbsp;{{=auth.user.first_name}}</span> <!-- Solo mostrar el nombre de usuario en pantallas más grandes -->
+                    {{if auth.user:}}
+                    <span class="d-none d-md-inline">&nbsp;{{=auth.user.first_name}}</span> 
+                    {{else:}}
+                    <span class="d-none d-md-inline">&nbsp;Usuario</span> <!-- Solo mostrar el nombre de usuario en pantallas más grandes -->
+                    {{pass}} 
                 </button>
                 {{if response.menu:}}
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

@@ -242,3 +242,23 @@ CREATE TABLE "auth_user"(
     "id_estado" INTEGER REFERENCES "estado" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL 
 );
 success!
+timestamp: 2026-02-17T15:04:04.718210
+ALTER TABLE "pedido_operativo" ADD "observaciones" TEXT;
+success!
+timestamp: 2026-02-17T15:11:55.357380
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "estatus" TEXT NOT NULL,
+    "observaciones" TEXT,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!

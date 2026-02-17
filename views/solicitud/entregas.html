@@ -32,6 +32,35 @@
     </div>
     
     <div class="card-footer bg-white text-muted">
-        <small>-</small>
+        <small>&nbsp;</small>
     </div>
 </div>
+
+<div class="modal fade" id="observaciones_frm" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-60" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Actualizar Observaciones</h4>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        Cargando...
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Modal al 60% del ancho de la pantalla */
+  #observaciones_frm .modal-dialog.modal-60 {
+    max-width: 60vw;
+  }
+</style>
+
+<script>
+function abrirModal(id) {
+    // Cargamos el formulario mediante el componente web2py_component
+    web2py_component("{{=URL('confirmar_pedido_entregado')}}/" + id, "modal-body-content");
+    // Mostramos el modal
+    jQuery('#observaciones_frm').modal('show');
+}
+</script>
