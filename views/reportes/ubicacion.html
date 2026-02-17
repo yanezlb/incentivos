@@ -29,12 +29,12 @@
                     <tr>
                         <td>
                             <div class="card-body">
-                                <table class="table-bordered">
+                                <table class="table table-hover border-collapse: collapse; border: none;">
                                     <tbody>
                                         {{for ente in entes:}}
-                                        <tr>
-                                            <td>{{=db.ente(ente.auth_user.id_ente).nombre}}</td>
-                                            <td align="right">{{=ente._extra['COUNT("auth_user"."id")']}}</td>
+                                        <tr style="border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6;">
+                                            <td style="border: none">{{=db.ente(ente.auth_user.id_ente).nombre}}</td>
+                                            <td style="border: none" align="right">{{=ente._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
                                     </tbody>
@@ -43,12 +43,12 @@
                         </td>
                         <td> 
                             <div class="card-body">
-                                <table class="table-bordered">
+                                <table class="table table-hover border-collapse: collapse; border: none;">
                                     <tbody>
                                         {{for negocio in negocios:}}
-                                        <tr>
-                                            <td>{{=db.negocio(negocio.auth_user.id_negocio).nombre}}</td>
-                                            <td align="right">{{=negocio._extra['COUNT("auth_user"."id")']}}</td>
+                                        <tr style="border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6;">
+                                            <td style="border: none">{{=db.negocio(negocio.auth_user.id_negocio).nombre}}</td>
+                                            <td style="border: none" align="right">{{=negocio._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
                                     </tbody>
@@ -57,12 +57,12 @@
                         </td>
                         <td>
                             <div class="card-body">
-                                <table class="table-bordered">
+                                <table class="table table-hover border-collapse: collapse; border: none;">
                                     <tbody>
                                         {{for estado in estados:}}
-                                        <tr>
-                                            <td>{{=db.estado(estado.auth_user.id_estado).nombre}}</td>
-                                            <td align="right">{{=estado._extra['COUNT("auth_user"."id")']}}</td>
+                                        <tr style="border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6;">
+                                            <td style="border: none">{{=db.estado(estado.auth_user.id_estado).nombre}}</td>
+                                            <td style="border: none" align="right">{{=estado._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
                                     </tbody>

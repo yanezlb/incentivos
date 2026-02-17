@@ -34,25 +34,69 @@
     <!-- Favicons -->
     {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
     {{block head}}{{end}}
+    <!-- Estilo personalizado -->
+    <style>
+        
+        .bg-pdvsa { background-color: #ed1c24; } /* Rojo Institucional */
+        .text-pdvsa { color: #ed1c24; }
+
+        .card-incentivo {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-incentivo:hover {
+            transform: translateY(-10px);
+        }
+
+        .icon-box {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ed1c24;
+        }
+
+        .btn-pdvsa {
+            background-color: #ed1c24;
+            color: white;
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-weight: bold;
+        }
+
+        .btn-pdvsa:hover {
+            background-color: #c41212;
+            color: white;
+        }
+
+        /* Recreando el borde azul del antiguo panel-primary */
+        .panel-blue {
+            border: 1px solid #007bff;
+        }
+        
+        /* Ajuste para que la tabla no tenga bordes dobles */
+        .panel-blue .table {
+            margin-bottom: 0;
+        }
+    </style>
   </head>
   <body>
     <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
-
     <header class="row position-relative">
       <img class="header-h p-0" src="{{=URL('static','images/nueva-cintilla.png')}}" alt="cintillo">
       <img class="nombre-app" src="{{=URL('static','images/nombre_app.png')}}" alt="Nombre de Aplicación">
         <a class="d-flex" href="index.html">
             <img class="imagen-cintillo" src="{{=URL('static','images/Logo_PDVSA.png')}}" alt="logo imagen pdvsa"/>
         </a>
-    </header>        
-
+    </header> 
     <div class="wrapper">
         <aside id="sidebar" class="expand">
             <div class="my-3"></div>
             <div class="btn-group mx-3" id="m-usuario">
                 <button class="btn btn-blanco1-usr dropdown-toggle d-flex sidebar-item" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="border: 0; border-radius: 9px;">
                     <i class="fas fa-user"></i>
-                    <span class="d-none d-md-inline">&nbsp;{{=auth.user.first_name}}</span> <!-- Solo mostrar el nombre de usuario en pantallas más grandes --> 
+                    <span class="d-none d-md-inline">&nbsp;{{=auth.user.first_name}}</span> <!-- Solo mostrar el nombre de usuario en pantallas más grandes -->
                 </button>
                 {{if response.menu:}}
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -131,13 +175,13 @@
             {{include}}
         </div>
     </div>
+
     <!-- Masthead ===================================== -->
-    
+    {{block header}}
+    {{end}}
     <!-- Main ========================================= -->
     <!-- Begin page content -->
-    
 
-    
     {{block footer}} <!-- this is default footer -->
     <footer class="footer container-fluid">
       <div class="row">
