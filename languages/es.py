@@ -126,7 +126,7 @@
 'Enter date as %(format)s': 'Enter date as %(format)s',
 'ENTREGAS': 'ENTREGAS',
 'Errors': 'Errores',
-'Errors in form, please check it out.': 'Errors in form, please check it out.',
+'Errors in form, please check it out.': 'Errores en formulario, por favor revisar.',
 'Estado': 'Estado',
 'Estatus operativo': 'Estatus operativo',
 'Este operativo ya está asignado a otro combo': 'Este operativo ya está asignado a otro combo',
