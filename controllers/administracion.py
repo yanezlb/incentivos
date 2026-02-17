@@ -25,6 +25,11 @@ def operativo():
         db.operativo.fecha_inicio_entrega,
         db.operativo.fecha_fin_entrega, 
         db.operativo.id_estatus_operativo]
+
+    count_rows = request.vars.count
+    
+    if count_rows:
+        response.flash = f"Registros insertados: {count_rows}"
     
     links = [
         dict(
@@ -96,24 +101,25 @@ def cargar_lotes():
         usuarios = db(db.auth_user).select()
         
         for usuario in usuarios:
-            db.pedido_operativo.update_or_insert(
-                    (
-                        (db.pedido_operativo.id_operativo == 2) & 
-                        (db.pedido_operativo.id_operativo_combo == id_operativo_combo) & 
-                        (db.pedido_operativo.id_usuario == usuario.id)
-                    ), 
-                    id_usuario=usuario.id, 
-                    id_operativo=id_operativo, 
+            existe = db((db.pedido_operativo.id_usuario ==  usuario.id) & 
+            (db.pedido_operativo.id_operativo == id_operativo) & 
+            (db.pedido_operativo.id_operativo_combo == id_operativo_combo)).count()
+
+            if not existe:
+                db.pedido_operativo.insert(
+                    id_usuario=usuario.id,
+                    id_operativo=id_operativo,
                     id_operativo_combo=id_operativo_combo,
                     estatus='REGISTRADO'
                 )
-            count += 1
+
+                count += 1
             
             db.commit()
 
-        redirect(URL('administracion','operativo'))
+        redirect(URL('administracion','operativo', vars={'count': count}))
 
-        response.flash = f"Registros insertados/actualizados {count}"
+        response.flash = f"Registros insertados {count}"
 
     return dict(
         datos_operativo=datos_operativo,

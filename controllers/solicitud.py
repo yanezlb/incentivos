@@ -11,6 +11,7 @@ def pedidos():
 
     # Obtener la fecha actual (solo fecha, sin hora)
     hoy = datetime.today().date()
+    db.pedido_operativo.observaciones.readable = False
 
     # Consulta a la tabla operativo con join a operativo_combo, filtrando
     # por intervalo [fecha_inicio_solicitud, fecha_fin_solicitud] que incluya hoy
@@ -41,7 +42,8 @@ def pedidos():
                         editable=False,  
                         deletable=False,
                         create=False,
-                        searchable=False)
+                        searchable=False,
+                        maxtextlength=50)
 
     # Devolvemos también los operativos vigentes por si se necesitan en la vista
     return dict(grid=grid, operativo_vigente=operativo_vigente)
@@ -152,6 +154,7 @@ def entregas():
                         editable=False,
                         deletable=False,
                         create=False,
-                        searchable=False)
+                        searchable=False,
+                        maxtextlength=50)
 
     return dict(grid=grid, form=form)

@@ -214,6 +214,7 @@
 'not in': 'not in',
 'Number of entries: **%s**': 'Numero de entradas: **%s**',
 'Object or table name': 'Nombre del objeto o tabla',
+'Observaciones': 'Observaciones',
 'Old password': 'Contraseña vieja',
 'Online book': 'Libro Online',
 'Online examples': 'Ejemplos en línea',
