@@ -155,6 +155,7 @@ auth.settings.extra_fields["auth_user"] = [
     Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),
     Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
 ]
+auth.settings.logout_next = URL('default', 'user', args=['login'])
 
 auth.define_tables(username=False, signature=False)
 
