@@ -29,13 +29,16 @@
           <label for="Recordar" class="login-footer">Recordar</label>
         </div>
         <div class="col-2"></div>
+        
+        {{if request.args(0)=='login' and not 'retrieve_password' in auth.settings.actions_disabled:}}
         <div class="col-8 text-end">
           <a href="#" class="login-footer">Olvidé mi Contraseña</a>
         </div>
+        {{pass}}
         {{if request.args(0)=='login' and not 'register' in auth.settings.actions_disabled:}}
-         <!--<div class="col-8 text-end">
+        <div class="col-8 text-end">
           <a href="{{=URL('user/register')}}">{{=T('Register')}}</a>
-        </div>-->
+        </div>
         {{pass}}
       </div>
 
