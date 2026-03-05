@@ -165,9 +165,20 @@ def usuarios():
     ## Para evitar que se muestre el campo email
     db.auth_user.email.writable = False
 
-    campos = [field for field in db.auth_user if field.name != 'id']
+    if request.args(0) == 'new':
+        db.auth_user.first_name.writable = True
+        db.auth_user.last_name.writable = True
+        db.auth_user.cedula.writable = True
+        db.auth_user.password.writable = True
+        db.auth_user.email.writable = True
 
-    grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos, deletable=False)
+    campos = [field for field in db.auth_user if field.name != 'id']
+    argumentos_formulario = {}
+    
+    if request.args(0) == 'edit':
+        argumentos_formulario = dict(submit_button='Actualizar')
+    
+    grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos, deletable=False, formargs=argumentos_formulario)
 
     form = SQLFORM.factory(
         Field('archivo_excel', 'upload', 
@@ -200,7 +211,7 @@ def usuarios():
 def desactivar_usuarios():
     campos = [field for field in db.auth_user if field.name != 'id']
 
-    grid = SQLFORM.grid(db.auth_user.is_active==False, csv=False, fields=campos, deletable=False)
+    grid = SQLFORM.grid(db.auth_user.is_active==False, csv=False, fields=campos, deletable=False, editable=False)
 
     form = SQLFORM.factory(
         Field('archivo_excel', 'upload', 
@@ -217,8 +228,8 @@ def desactivar_usuarios():
         try:
             # Llamamos a la lógica de procesamiento
             resultado = procesar_desactivar_usuarios(ruta_completa)
-            response.flash = f"Carga exitosa: {resultado} registros procesados."
-            redirect(URL('administracion', 'desactivar_usuarios'))
+            response.flash = f"Carga exitosa: {resultado} registros desactivados."
+            # redirect(URL('administracion', 'desactivar_usuarios'))
         except Exception as e:
             response.flash = f"Error en la carga: {str(e)}"
             print({str(e)})
@@ -229,14 +240,14 @@ def desactivar_usuarios():
             
     return dict(form=form, grid=grid)
 
-
+@auth.requires_login()
 def procesar_desactivar_usuarios(ruta):
     df = pd.read_excel(ruta)
     conteo = 0
     
 
     for _, fila in df.iterrows(): 
-        trabajador = db(db.auth_user.cedula == fila['Cédula']).select().first()
+        trabajador = db((db.auth_user.cedula == fila['Cédula']) & (db.auth_user.is_active == True)).select().first()
 
         if trabajador: # Validación mínima de que existen las maestras
             db(db.auth_user.cedula == fila['Cédula']).update(

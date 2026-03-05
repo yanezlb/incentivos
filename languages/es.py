@@ -37,6 +37,7 @@
 'A new password was emailed to you': 'A new password was emailed to you',
 'About': 'Acerca de',
 'Access Control': 'Control de Acceso',
+'Actualizar': 'Actualizar',
 'Add Record': 'Añadir Registro',
 'Add record to database': 'Añadir registro a la base de datos',
 'Add this to the search as an AND term': 'Añadir esto a la búsqueda como un término AND',

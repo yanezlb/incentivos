@@ -157,8 +157,8 @@ auth.settings.extra_fields["auth_user"] = [
     Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),
     Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
     Field('id_estado_acopio', db.estado, label='Estado Acopio', notnull=True, required=True),
-    Field('fecha_nacimiento', 'date', label='Fecha de Nacimiento', notnull=True, required=True),
-    Field('fecha_ingreso', 'date', label='Fecha de Ingreso', notnull=True, required=True),
+    Field('fecha_nacimiento', 'date', label='Fecha de Nacimiento', requires=IS_DATE(format='%Y-%m-%d'), notnull=True, required=True),
+    Field('fecha_ingreso', 'date', label='Fecha de Ingreso', requires=IS_DATE(format='%Y-%m-%d'), notnull=True, required=True),
 ]
 auth.settings.logout_next = URL('default', 'user', args=['login'])
 
@@ -232,7 +232,6 @@ if configuration.get("scheduler.enabled"):
 
 # Funcion para el registro de campos para la auditoria en las tablas
 db.auth_user.password.writable = False
-db.auth_user.is_active.writable = False
 db.auth_user.first_name.writable = False
 db.auth_user.last_name.writable = False
 db.auth_user.cedula.writable = False
