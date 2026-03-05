@@ -164,7 +164,7 @@ def configurar_operativo():
 def usuarios():
     ## Para evitar que se muestre el campo email
     db.auth_user.email.writable = False
-    
+
     campos = [field for field in db.auth_user if field.name != 'id']
 
     grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos, deletable=False)
@@ -254,13 +254,15 @@ def procesar_excel_logica(ruta):
     for _, fila in df.iterrows():
         # Ejemplo para Región
         reg = db(db.region_acopio.nombre == fila['Region Centro de Acopio']).select().first()
+        # Ejemplo para Estado Acopio
+        est_acopio = db(db.estado.nombre == fila['Estado Centro Acopio']).select().first()
         # Ejemplo para Estado
-        est = db(db.estado.nombre == fila['Estado Centro Acopio']).select().first()
+        est_administrativo = db(db.estado.nombre == fila['Estado Ubicac Adm']).select().first()
         # Clasificaciones (Ente y Negocio)
         ente = db(db.ente.nombre == fila['CLASIF']).select().first()
         negocio = db(db.negocio.nombre == fila['CLASIF 2']).select().first()
         # 4. Insert en auth_user
-        if reg and est: # Validación mínima de que existen las maestras
+        if reg and est_administrativo: # Validación mínima de que existen las maestras
             db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'] ,
                 first_name = fila['Nombre y Apellido'].split()[0],
                 last_name = fila['Nombre y Apellido'].split()[1],
@@ -269,7 +271,10 @@ def procesar_excel_logica(ruta):
                 id_ente = ente.id if ente else 0,
                 id_negocio = negocio.id if negocio else 0,
                 id_region_acopio = reg.id,
-                id_estado = est.id,
+                id_estado_acopio = est_acopio.id,
+                id_estado = est_administrativo.id,
+                fecha_nacimiento = transformar_fecha(fila['FNac']),
+                fecha_ingreso = transformar_fecha(fila['FECHA DE INGRESO']),
                 password = db.auth_user.password.validate('admin')[0] # Pass temporal
             )
             conteo += 1

@@ -156,6 +156,9 @@ auth.settings.extra_fields["auth_user"] = [
     Field('id_negocio', db.negocio, label='Negocio / Filial', notnull=True, required=True),
     Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),
     Field('id_estado', db.estado, label='Estado', notnull=True, required=True),
+    Field('id_estado_acopio', db.estado, label='Estado Acopio', notnull=True, required=True),
+    Field('fecha_nacimiento', 'date', label='Fecha de Nacimiento', notnull=True, required=True),
+    Field('fecha_ingreso', 'date', label='Fecha de Ingreso', notnull=True, required=True),
 ]
 auth.settings.logout_next = URL('default', 'user', args=['login'])
 

@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 
 def formato_fecha(fecha_original):
     return fecha_original.strftime("%d/%m/%Y")
+
+
+def transformar_fecha(fecha_str):
+    fecha_str = fecha_str.strftime('%Y-%m-%d')
+    return fecha_str
 
 
 def get_estatus_operativo(id_estatus):
