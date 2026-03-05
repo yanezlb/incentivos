@@ -98,6 +98,9 @@ def entregas():
 
 @auth.requires_login()
 def trabajadores():
+    ## Para evitar que se muestre el campo email
+    db.auth_user.email.writable = False
+
     grid = SQLFORM.grid(db(db.auth_user), csv=False, deletable=False, create=False)
 
     return dict(grid=grid)

@@ -162,9 +162,12 @@ def configurar_operativo():
 
 @auth.requires_login()
 def usuarios():
+    ## Para evitar que se muestre el campo email
+    db.auth_user.email.writable = False
+    
     campos = [field for field in db.auth_user if field.name != 'id']
 
-    grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos)
+    grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos, deletable=False)
 
     form = SQLFORM.factory(
         Field('archivo_excel', 'upload', 
@@ -193,6 +196,58 @@ def usuarios():
     return dict(form=form, grid=grid)
 
 
+@auth.requires_login()
+def desactivar_usuarios():
+    campos = [field for field in db.auth_user if field.name != 'id']
+
+    grid = SQLFORM.grid(db.auth_user.is_active==False, csv=False, fields=campos, deletable=False)
+
+    form = SQLFORM.factory(
+        Field('archivo_excel', 'upload', 
+              uploadfolder=os.path.join(request.folder, 'uploads'),
+              requires=IS_NOT_EMPTY(),
+              label="Archivo Excel (.xlsx)")
+    )
+
+    if form.process().accepted:
+        # Obtenemos el nombre del archivo guardado en la carpeta uploads
+        nombre_archivo = form.vars.archivo_excel
+        ruta_completa = os.path.join(request.folder, 'uploads', nombre_archivo)
+        
+        try:
+            # Llamamos a la lógica de procesamiento
+            resultado = procesar_desactivar_usuarios(ruta_completa)
+            response.flash = f"Carga exitosa: {resultado} registros procesados."
+            redirect(URL('administracion', 'desactivar_usuarios'))
+        except Exception as e:
+            response.flash = f"Error en la carga: {str(e)}"
+            print({str(e)})
+        finally:
+            # Opcional: Eliminar el archivo después de procesarlo para no llenar el disco
+            # os.unlink(ruta_completa)
+            pass
+            
+    return dict(form=form, grid=grid)
+
+
+def procesar_desactivar_usuarios(ruta):
+    df = pd.read_excel(ruta)
+    conteo = 0
+    
+
+    for _, fila in df.iterrows(): 
+        trabajador = db(db.auth_user.cedula == fila['Cédula']).select().first()
+
+        if trabajador: # Validación mínima de que existen las maestras
+            db(db.auth_user.cedula == fila['Cédula']).update(
+                is_active = False
+            )
+            conteo += 1
+            
+    db.commit()
+    return conteo
+
+
 def procesar_excel_logica(ruta):
     df = pd.read_excel(ruta)
     conteo = 0
@@ -204,22 +259,17 @@ def procesar_excel_logica(ruta):
         # Clasificaciones (Ente y Negocio)
         ente = db(db.ente.nombre == fila['CLASIF']).select().first()
         negocio = db(db.negocio.nombre == fila['CLASIF 2']).select().first()
-        print('REGION CENTRO ACOPIO')
-        print(reg)
         # 4. Insert en auth_user
         if reg and est: # Validación mínima de que existen las maestras
-            db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'],
+            db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'] ,
                 first_name = fila['Nombre y Apellido'].split()[0],
                 last_name = fila['Nombre y Apellido'].split()[1],
-                # email = fila['Email'],
-                email = 'admin@admin.com',
+                email = fila['Correo'],
                 cedula = fila['Cédula'],
                 id_ente = ente.id if ente else 0,
                 id_negocio = negocio.id if negocio else 0,
                 id_region_acopio = reg.id,
                 id_estado = est.id,
-                telefono_oficina = str('2120000000')[:10],
-                telefono_celular = str('2120000000')[:10],
                 password = db.auth_user.password.validate('admin')[0] # Pass temporal
             )
             conteo += 1

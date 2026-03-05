@@ -23,6 +23,7 @@ if auth.user:
             ]),
         (T('ADMINISTRACIÓN'), False, '#', [
             (T('TRABAJADORES'), False, URL('administracion', 'usuarios')),
+            (T('DESACTIVAR TRABAJADORES'), False, URL('administracion', 'desactivar_usuarios')),
             (T('ALMACENES'), False, URL('administracion', 'almacen')),
             (T('OPERATIVOS'), False, URL('administracion', 'operativo')),
         ]),

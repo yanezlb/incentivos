@@ -150,6 +150,8 @@ db.parroquia.nombre.represent = lambda value, row: value.upper() if value else "
 
 auth.settings.extra_fields["auth_user"] = [
     Field('cedula', 'integer', label='CI'),
+    Field('is_active','boolean', label='Estatus', default=True),
+    Field('telefono', 'integer', label='Telf.'),
     Field('id_ente', db.ente, label='Ente', notnull=True, required=True),
     Field('id_negocio', db.negocio, label='Negocio / Filial', notnull=True, required=True),
     Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),
@@ -226,6 +228,13 @@ if configuration.get("scheduler.enabled"):
 # auth.enable_record_versioning(db)
 
 # Funcion para el registro de campos para la auditoria en las tablas
+db.auth_user.password.writable = False
+db.auth_user.is_active.writable = False
+db.auth_user.first_name.writable = False
+db.auth_user.last_name.writable = False
+db.auth_user.cedula.writable = False
+
+
 def campos_comunes():
     campos_comunes = db.Table(db, 'comun',
         Field('creado_por',db.auth_user,default=auth.user_id,readable=False,writable=False),
@@ -262,11 +271,11 @@ db.define_table('estatus_operativo',
 
 db.define_table('operativo',
     Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True, default=1, writable=False),
-    Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True),
+    Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True, writable=False),
     Field('fecha_fin_solicitud', 'date', label='Fecha Fin de Solicitud', notnull=True, required=True),
-    Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True),
+    Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True, writable=False),
     Field('fecha_fin_entrega', 'date', label='Fecha Fin de Entrega', notnull=True, required=True),
-    Field('nombre', 'string', label='Nombre del operativo', notnull=True, required=True, length=25),
+    Field('nombre', 'string', label='Nombre del operativo', notnull=True, required=True, length=25, writable=False),
     campos_comunes(),
     format='%(nombre)s'
 )
@@ -275,7 +284,7 @@ db.define_table('operativo_combo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
     Field('nombre', 'string', label='Nombre del combo', notnull=True, required=True, length=25),
     Field('cant_personas', 'integer', label='Cantidad de personas', notnull=True, required=True),
-    Field('venta_maxima', 'integer', label='Venta máxima', notnull=True, required=True),
+    Field('venta_maxima', 'integer', label='Entrega máxima', notnull=True, required=True),
     campos_comunes(),
     format='%(nombre)s'
 )

@@ -23,7 +23,13 @@
                         <td><b>Email:</b> {{=usuario_data.email or '-'}} </td>
                         <td><b>Estado:</b> {{=db.estado(usuario_data.id_estado).nombre or '-'}} </td>
                         <td><b>Región centro de acopio:</b> {{=db.region(usuario_data.id_region_acopio).nombre or '-'}}</td>
-                        <td>&nbsp;</td>
+                        <td><b>Teléfono:</b> {{=usuario_data.telefono or '-'}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Estatus:</b> <span class="badge badge-{{= "success" if usuario_data.is_active else "danger"}}">{{= "Activo" if usuario_data.is_active else "Inactivo"}}</span></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
