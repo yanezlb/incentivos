@@ -94,6 +94,10 @@ response.form_label_separator = ""
 # host names must be a list of allowed host names (glob syntax allowed)
 auth = Auth(db, host_names=configuration.get("host.names"))
 T.force('es')
+T.accepted_date_format = '%Y-%m-%d'
+T.accepted_datetime_format = '%Y-%m-%d %H:%M:%S'
+IS_DATE.format = '%Y-%m-%d'
+
 # -------------------------------------------------------------------------
 # create all tables needed by auth, maybe add a list of extra fields
 # -------------------------------------------------------------------------
@@ -272,15 +276,24 @@ db.define_table('estatus_operativo',
     )
 
 db.define_table('operativo',
-    Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True, default=1, writable=False),
-    Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True, writable=False),
+    Field('id_estatus_operativo', db.estatus_operativo, label='Estatus operativo', notnull=True, required=True, default=1),
+    Field('fecha_inicio_solicitud', 'date', label='Fecha Inicio de Solicitud', notnull=True, required=True),
     Field('fecha_fin_solicitud', 'date', label='Fecha Fin de Solicitud', notnull=True, required=True),
-    Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True, writable=False),
+    Field('fecha_inicio_entrega', 'date', label='Fecha Inicio de Entrega', notnull=True, required=True),
     Field('fecha_fin_entrega', 'date', label='Fecha Fin de Entrega', notnull=True, required=True),
-    Field('nombre', 'string', label='Nombre del operativo', notnull=True, required=True, length=25, writable=False),
+    Field('nombre', 'string', label='Nombre del operativo', notnull=True, required=True, length=25),
     campos_comunes(),
     format='%(nombre)s'
 )
+db.operativo.fecha_inicio_solicitud.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
+db.operativo.fecha_fin_solicitud.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
+db.operativo.fecha_inicio_entrega.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
+db.operativo.fecha_fin_entrega.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
+db.operativo.fecha_inicio_solicitud.requires = IS_DATE(format='%Y-%m-%d')
+db.operativo.fecha_fin_solicitud.requires = IS_DATE(format='%Y-%m-%d')
+db.operativo.fecha_inicio_entrega.requires = IS_DATE(format='%Y-%m-%d')
+db.operativo.fecha_fin_entrega.requires = IS_DATE(format='%Y-%m-%d')
+
 
 db.define_table('operativo_combo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     

@@ -48,11 +48,11 @@ def pedidos():
     # Devolvemos también los operativos vigentes por si se necesitan en la vista
     return dict(grid=grid, operativo_vigente=operativo_vigente)
 
-
+@auth.requires_login()
 def get_estatus(lista):
     return lista[0]
 
-
+@auth.requires_login()
 def confirmar_pedido_entregado():
     """
     Controlador para la confirmación de pedidos en la solicitud.
@@ -60,26 +60,24 @@ def confirmar_pedido_entregado():
     """
     pedido_id = request.args(0)
     pedido = db.pedido_operativo(pedido_id)
-    db.pedido_operativo.id.readable = False 
-
-    if pedido:
-        # Lógica para confirmar el pedido
-        pedido.update_record(estatus='ENTREGADO')
-
     id_registro = request.args(0)
     record = db.pedido_operativo(id_registro) or redirect(URL('index'))
-    
+
+    db.pedido_operativo.id.readable = False 
+        
     # Solo mostramos el campo observaciones
     form = SQLFORM(db.pedido_operativo, record, fields=['observaciones'], buttons=[TAG.button('Guardar', _type="submit", _class="btn btn-primary")])
 
-    if form.process().accepted:
+    if form.process(formname='frm_observaciones').accepted and pedido:
+        pedido.update_record(estatus='ENTREGADO')
+        
         # Respuesta especial para cerrar el modal y refrescar la tabla
         return SCRIPT("jQuery('#observaciones_frm').modal('hide'); window.location.reload();")
         
     return form
     
 
-
+@auth.requires_login()
 def confirmar_pedido_registrado():
     """
     Controlador para registrar un pedido operativo con estatus REGISTRADO.
@@ -117,7 +115,8 @@ def entregas():
 
     # 1. Formulario para capturar la cédula
     form = SQLFORM.factory(
-        Field('cedula', 'string', label='Cédula', requires=IS_NOT_EMPTY())
+        Field('cedula', 'string', label='Cédula', requires=IS_NOT_EMPTY()),
+        submit_button='Buscar'
     )
 
     filtro = None

@@ -24,10 +24,22 @@ def operativo():
         db.operativo.fecha_fin_solicitud,
         db.operativo.fecha_inicio_entrega,
         db.operativo.fecha_fin_entrega, 
-        db.operativo.id_estatus_operativo]
-
+        db.operativo.id_estatus_operativo
+    ]
     count_rows = request.vars.count
+    argumentos_formulario = {}
+
+    if request.args(0) == 'edit':
+        db.operativo.fecha_inicio_solicitud.writable = False
+        db.operativo.fecha_inicio_entrega.writable = False
+        db.operativo.fecha_inicio_solicitud.writable = False
+        db.operativo.id_estatus_operativo.writable = False
+        argumentos_formulario = dict(submit_button='Actualizar')
     
+    if request.args(0) == 'new':
+        db.operativo.id_estatus_operativo.writable = False
+        argumentos_formulario = dict(submit_button='Guardar')
+        
     if count_rows:
         response.flash = f"Registros insertados: {count_rows}"
     
@@ -46,7 +58,7 @@ def operativo():
         )
     ]
 
-    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links, deletable=False)
+    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links, deletable=False, formargs=argumentos_formulario)
 
     return dict(grid=grid)
 
