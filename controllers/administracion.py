@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 
+
 @auth.requires_login()
 def almacen():
     """
@@ -328,3 +329,13 @@ def mis_datos():
 
     # return dict(form=form, usuario_data=db.auth_user(usuario_id))
     return dict(usuario_data=db.auth_user(usuario_id))
+
+
+@auth.requires_login()
+def inventario():
+    campos = [field for field in db.movimiento if field.name != 'id']
+    grid = SQLFORM.grid(db.movimiento, csv=False, fields=campos)
+
+    return dict(grid=grid)
+
+

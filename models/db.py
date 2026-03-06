@@ -267,7 +267,8 @@ db.define_table('almacen',
     Field('id_tipo_almacen', db.tipo_almacen, label='Tipo Almacen', notnull=True, required=True),
     Field('nombre', 'string', label='Nombre', notnull=True, required=True),
     Field('direccion', 'text', label='Dirección', notnull=True, required=True),
-    campos_comunes()
+    campos_comunes(),
+    format='%(nombre)s'
 )
 
 db.define_table('estatus_operativo',
@@ -317,3 +318,28 @@ db.define_table('pedido_operativo',
     campos_comunes()
 )
 db.pedido_operativo.estatus.represent = lambda valor, fila: XML(get_badge_estatus(valor))
+
+## Tablas para el control del Inventario y movimientos
+db.define_table('tipo_movimiento',
+    Field('nombre', 'string', label='Nombre movimiento', notnull=True, required=True),
+    Field('signo', 'integer', label='Signo', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+
+db.define_table('estatus_movimiento',
+    Field('nombre', 'string', label='Nombre', notnull=True, required=True),
+    Field('factor', 'integer', label='Factor', notnull=True, required=True),
+    format='%(nombre)s'
+)
+
+
+db.define_table('movimiento',
+    Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),
+    Field('id_almacen', db.almacen, label='Almacén', notnull=True, required=True),
+    Field('id_tipo_movimiento', db.tipo_movimiento, label='Tipo movimiento', notnull=True, required=True),
+    Field('id_estatus_movimiento', db.estatus_movimiento, label='Estatus movimiento', notnull=True, required=True),
+    Field('cantidad', 'integer', label='Cantidad', notnull=True, required=True),
+    Field('observaciones', 'text', label='Observaciones'),
+    campos_comunes()
+)

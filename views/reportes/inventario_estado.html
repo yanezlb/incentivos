@@ -1,0 +1,60 @@
+<style>
+    /* Estilos para la tabla */
+    .table thead th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-align: center;
+    }
+    .border-center {
+        border: 1px solid #dee2e6;
+    }
+    .border-center-text {
+        border: 1px solid #dee2e6;
+        text-align: center;
+    }
+</style>
+
+<div class="d-flex align-items-center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="border-center" >Pedidos</th>
+                <th colspan="2" class="border-center">Entradas</th>
+                <th colspan="6" class="border-center">Salidas</th>
+                <th class="border-center"></th>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <th class="border-center-text">Total</th>
+                <th class="border-center-text">Recepción</th>
+                <th class="border-center-text">Recepción Transferencia</th>
+                <th class="border-center-text">Entregas</th>
+                <th class="border-center-text">Merma</th>
+                <th class="border-center-text">Hurto</th>
+                <th class="border-center-text">Comedor</th>
+                <th class="border-center-text">Transferencia Env.</th>
+                <th class="border-center-text">Casos Especiales</th>
+                <th class="border-center-text">Disponible</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for fila in datos_estado:}}
+            <tr>
+                <td>{{=fila['estado']}}</td>
+                <td class="border-center-text">{{=fila['cant_pedidos']}}</td>
+                <td class="border-center-text">{{=fila['recepcion']}}</td>
+                <td class="border-center-text">{{=fila['recepcion_transferencia']}}</td>
+                <td class="border-center-text">{{=fila['entrega_trabajador']}}</td>
+                <td class="border-center-text">{{=fila['merma']}}</td>
+                <td class="border-center-text">{{=fila['hurto']}}</td>
+                <td class="border-center-text">{{=fila['despacho_comedor']}}</td>
+                <td class="border-center-text">{{=fila['salida_transferencia']}}</td>
+                <td class="border-center-text">{{=fila['casos_especiales']}}</td>
+                <td class="border-center-text">{{=fila['total_general']}}</td>
+            </tr>
+            {{pass}}
+        </tbody>
+    </table>
+</div>
+
