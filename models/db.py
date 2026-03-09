@@ -296,6 +296,12 @@ db.operativo.fecha_inicio_entrega.requires = IS_DATE(format='%Y-%m-%d')
 db.operativo.fecha_fin_entrega.requires = IS_DATE(format='%Y-%m-%d')
 
 
+db.define_table('operativo_almacen',
+    Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),
+    Field('id_almacen', db.almacen, label='Almacén', notnull=True, required=True),
+    campos_comunes()
+)
+
 db.define_table('operativo_combo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
     Field('nombre', 'string', label='Nombre del combo', notnull=True, required=True, length=25),
@@ -315,6 +321,7 @@ db.define_table('pedido_operativo',
     Field('id_usuario',  db.auth_user, label='Empleado', notnull=True, required=True),
     Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
     Field('observaciones', 'text', label='Observaciones'),
+    Field('entrega_tiempo',  'datetime', label='Tiempo de Entrega'),
     campos_comunes()
 )
 db.pedido_operativo.estatus.represent = lambda valor, fila: XML(get_badge_estatus(valor))

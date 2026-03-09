@@ -322,6 +322,7 @@
 'This App': 'Esta Aplicación',
 'This code was emailed to you and is required for login.': 'This code was emailed to you and is required for login.',
 'This email already has an account': 'Este correo electrónico ya tiene una cuenta',
+'Tiempo de Entrega': 'Tiempo de Entrega',
 'Time in Cache (h:m:s)': 'Tiempo en Caché (h:m:s)',
 'Timestamp': 'Marca de tiempo',
 'Tipo Almacen': 'Tipo Almacen',

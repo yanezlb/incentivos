@@ -1,4 +1,4 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import pandas as pd
 
@@ -146,14 +146,13 @@ def cargar_lotes():
 
 @auth.requires_login()
 def configurar_operativo():
-    # Lógica para manejar las operaciones CRUD de operativos
     registro_id = request.args(0)
 
     db.operativo_combo.id_operativo.default = registro_id
     db.operativo_combo.id_operativo.writable = False
     db.operativo_combo.id_operativo.readable = False
 
-    query = ((db.operativo_combo.id_operativo == registro_id))
+    query = (db.operativo_combo.id_operativo == registro_id)
     grid_operativo_combo = SQLFORM.grid(query, csv=False, user_signature=False)
     form_operativo_combo = SQLFORM(db.operativo_combo).process()
 
@@ -165,12 +164,26 @@ def configurar_operativo():
     elif form_operativo_combo.errors:
         response.flash = 'El formulario tiene errores'
 
+    # ---------- CONFIGURACIÓN DE OPERATIVO_ALMACEN ----------
+    db.operativo_almacen.id_operativo.default = registro_id
+    db.operativo_almacen.id_operativo.writable = False
+    db.operativo_almacen.id_operativo.readable = False
+
+    query_almacen = (db.operativo_almacen.id_operativo == registro_id)
+    almacenes_grid = SQLFORM.grid(
+        query_almacen,
+        csv=False,
+        user_signature=False,
+        args=[registro_id]  # mantiene el id en la URL al hacer new/edit
+    )
+    
     return dict(
-            operativo_data=db.operativo(registro_id), 
-            grid_operativo_combo=grid_operativo_combo, 
-            form_operativo_combo=form_operativo_combo,
-            ope_combo_info=ope_combo_info
-        )
+        operativo_data=db.operativo(registro_id), 
+        grid_operativo_combo=grid_operativo_combo, 
+        form_operativo_combo=form_operativo_combo,
+        ope_combo_info=ope_combo_info,
+        almacenes_grid=almacenes_grid
+    )
 
 
 @auth.requires_login()

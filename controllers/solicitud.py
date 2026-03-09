@@ -69,11 +69,11 @@ def confirmar_pedido_entregado():
     form = SQLFORM(db.pedido_operativo, record, fields=['observaciones'], buttons=[TAG.button('Guardar', _type="submit", _class="btn btn-primary")])
 
     if form.process(formname='frm_observaciones').accepted and pedido:
-        pedido.update_record(estatus='ENTREGADO')
+        pedido.update_record(estatus='ENTREGADO', entrega_tiempo=datetime.now())
         
         # Respuesta especial para cerrar el modal y refrescar la tabla
         return SCRIPT("jQuery('#observaciones_frm').modal('hide'); window.location.reload();")
-        
+
     return form
     
 
