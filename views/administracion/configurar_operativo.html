@@ -6,81 +6,70 @@
     <li class="breadcrumb-item active" aria-current="page">Configurar Operativo</li>
   </ol>
 </nav>
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
-        <span>Operativo</span>
-    </div>
-    <div class="card-body">
-        <br><br>
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead>
-                    <tr>
-                        <th>Operativo</th>
-                        <th>Fecha Inicio Solicitud</th>
-                        <th>Fecha Fin Solicitud</th>
-                        <th>Fecha Inicio Entrega</th>
-                        <th>Fecha Fin Entrega</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{=operativo_data.nombre}}</td>
-                        <td>{{=operativo_data.fecha_inicio_solicitud}}</td>
-                        <td>{{=operativo_data.fecha_fin_solicitud}}</td>
-                        <td>{{=operativo_data.fecha_inicio_entrega}}</td>
-                        <td>{{=operativo_data.fecha_fin_entrega}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-    </div>
-    
-    <div class="card-footer bg-white text-muted">
-        <small>&nbsp;</small>
-    </div>
-</div>
-<br>
-<div class="card">
-        
-    <div class="card-header bg-danger text-white font-weight-bold">
-        Combo
-    </div>
-
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <br>
-            {{if len(ope_combo_info) > 0:}}
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Cantidad de personas a atender</th>
-                                <th>Entrega Máxima</th>
-                            </tr>
-                        </thead>
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
+                <span>Operativo</span>
+            </div>
+            <div class="card-body">
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
                         <tbody>
                             <tr>
-                                <td>{{=ope_combo_info[0].nombre}}</td>
-                                <td>{{=ope_combo_info[0].cant_personas}}</td>
-                                <td>{{=ope_combo_info[0].venta_maxima}}</td>
+                                <td><b>Operativo:</b> {{=operativo_data.nombre}}</td>
+                                <td><b>Fecha Inicio Solicitud:</b> {{=formato_fecha(operativo_data.fecha_inicio_solicitud)}}</td>
+                                <td><b>Fecha Fin Solicitud:</b> {{=formato_fecha(operativo_data.fecha_fin_solicitud)}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Fecha Inicio Entrega:</b> {{=formato_fecha(operativo_data.fecha_inicio_entrega)}}</td>
+                                <td><b>Fecha Fin Entrega:</b> {{=formato_fecha(operativo_data.fecha_fin_entrega)}}</td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-   
-            {{else:}}
-                {{=form_operativo_combo}}
-            {{pass}}
+            </div>
+            <div class="card-footer bg-white text-muted">
+                <small>&nbsp;</small>
+            </div>
         </div>
     </div>
-
-    <div class="card-footer bg-white text-muted">
-        <small>&nbsp;</small>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white font-weight-bold">
+                Combo
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <br>
+                    {{if len(ope_combo_info) > 0:}}
+                        <div class="card-body">
+                            <table class="table table-hover mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Nombre:</b> {{=ope_combo_info[0].nombre}}</td>
+                                        <td><b>Cantidad de personas a atender:</b> {{=ope_combo_info[0].cant_personas}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Entrega Máxima:</b> {{=ope_combo_info[0].venta_maxima}}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <br><br>
+                    {{else:}}
+                        {{=form_operativo_combo}}
+                    {{pass}}
+                </div>
+            </div>
+            <div class="card-footer bg-white text-muted">
+                <small>&nbsp;</small>
+            </div>
+        </div>
     </div>
-    <br>
 </div>
 <br>
 <div class="card">
@@ -96,7 +85,6 @@
             </div>
         </div>
     </div>
-
     <div class="card-footer bg-white text-muted">
         <small>&nbsp;</small>
     </div>

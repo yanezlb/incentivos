@@ -169,6 +169,17 @@ def configurar_operativo():
     db.operativo_almacen.id_operativo.writable = False
     db.operativo_almacen.id_operativo.readable = False
 
+    # Evitar más de un registro por (id_operativo, id_almacen)
+    from gluon.validators import IS_NOT_IN_DB
+    db.operativo_almacen.id_almacen.requires = [
+        IS_IN_DB(db, 'almacen.id', '%(nombre)s'),
+        IS_NOT_IN_DB(
+            db(db.operativo_almacen.id_operativo == registro_id),
+            'operativo_almacen.id_almacen',
+            error_message='Ya existe un registro para este operativo y almacén'
+        )
+    ]
+
     query_almacen = (db.operativo_almacen.id_operativo == registro_id)
     almacenes_grid = SQLFORM.grid(
         query_almacen,
@@ -176,7 +187,7 @@ def configurar_operativo():
         user_signature=False,
         args=[registro_id]  # mantiene el id en la URL al hacer new/edit
     )
-    
+
     return dict(
         operativo_data=db.operativo(registro_id), 
         grid_operativo_combo=grid_operativo_combo, 
