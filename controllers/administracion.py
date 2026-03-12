@@ -453,8 +453,7 @@ def inventario_entrada():
                 estatus_movimiento_txt=EST_MOV_VALIDADO,
                 cantidad=form.vars.cantidad
             )
-            print('Resultado entrada')
-            print(result)
+            
         except Exception as e:
             response.flash = f"Error al registrar la transferencia: {str(e)}"
 

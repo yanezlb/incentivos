@@ -228,7 +228,7 @@ def inventario():
         select 
         almacen, cant_pedidos, recepcion, entrega_trabajador, despacho_comedor, 
         merma, hurto, recepcion_transferencia, salida_transferencia, casos_especiales, total_general  
-        from pedidos a
+        right from pedidos a
         join movimientos b on a.id_operativo = b.id_operativo
         {filtro}"""
     
@@ -272,7 +272,7 @@ def inventario_estado():
         estado, cant_pedidos, recepcion, entrega_trabajador, despacho_comedor, 
         merma, hurto, recepcion_transferencia, salida_transferencia, casos_especiales, total_general  
         from pedidos a
-        join movimientos b on a.id_operativo = b.id_operativo
+        right join movimientos b on a.id_operativo = b.id_operativo
         {filtro}"""
     
     datos_estado = db.executesql(query_estado, as_ordered_dict=True)
@@ -315,7 +315,7 @@ def inventario_region():
         region, cant_pedidos, recepcion, entrega_trabajador, despacho_comedor, 
         merma, hurto, recepcion_transferencia, salida_transferencia, casos_especiales, total_general  
         from pedidos a
-        join movimientos b on a.id_operativo = b.id_operativo
+        right join movimientos b on a.id_operativo = b.id_operativo
         {filtro}"""
     
     datos_region = db.executesql(query_region, as_ordered_dict=True)
@@ -357,7 +357,7 @@ def inventario_almacen():
         almacen, cant_pedidos, recepcion, entrega_trabajador, despacho_comedor, 
         merma, hurto, recepcion_transferencia, salida_transferencia, casos_especiales, total_general  
         from pedidos a
-        join movimientos b on a.id_operativo = b.id_operativo
+        right join movimientos b on a.id_operativo = b.id_operativo
         {filtro}"""
     
     datos_almacen = db.executesql(query_almacen, as_ordered_dict=True)
