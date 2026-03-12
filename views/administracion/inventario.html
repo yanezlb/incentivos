@@ -12,10 +12,28 @@
         <span>Inventario</span>
     </div>
     <div class="card-body">
-        <br>
-        <p>{{=grid}}</p>
+      <a class="button btn btn-warning" href="{{=URL('administracion', 'inventario_transferencia')}}">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span class="buttontext button" title="Añadir registro a la base de datos">
+          Transferencia
+        </span>
+      </a>
+      <a class="button btn btn-success" href="{{=URL('administracion', 'inventario_entrada')}}">
+        <i class="fa-solid fa-arrow-down"></i>
+        <span class="buttontext button" title="Añadir registro a la base de datos">
+          Entrada
+        </span>
+      </a>
+      <a class="button btn btn-danger" href="{{=URL('administracion', 'inventario_salida')}}">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span class="buttontext button" title="Añadir registro a la base de datos">
+          Salida
+        </span>
+      </a>
+      <br>
+      <p>{{=grid}}</p>
     </div>
-    
+
     <div class="card-footer bg-white text-muted">
         <small>&nbsp;</small>
     </div>

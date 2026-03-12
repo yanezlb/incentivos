@@ -492,3 +492,129 @@ CREATE TABLE "operativo_almacen"(
     "is_active" CHAR(1)
 );
 success!
+timestamp: 2026-03-11T14:50:41.979048
+ALTER TABLE "pedido_operativo" ADD "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-03-11T14:51:33.686582
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "estatus" TEXT NOT NULL,
+    "observaciones" TEXT,
+    "entrega_tiempo" TIMESTAMP,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-03-11T14:54:13.011360
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "estatus" TEXT NOT NULL,
+    "observaciones" TEXT,
+    "entrega_tiempo" TIMESTAMP,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-03-11T15:22:22.566394
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "estatus" TEXT NOT NULL,
+    "observaciones" TEXT,
+    "entrega_tiempo" TIMESTAMP,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-03-11T15:24:46.115230
+CREATE TABLE "pedido_operativo"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_operativo_combo" INTEGER REFERENCES "operativo_combo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_usuario_retiro" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "id_usuario_entrega" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "estatus" TEXT NOT NULL,
+    "observaciones" TEXT,
+    "entrega_tiempo" TIMESTAMP,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-03-12T15:13:35.436780
+ALTER TABLE "movimiento" ADD "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-03-12T15:13:53.035255
+ALTER TABLE "movimiento" ADD "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-03-12T15:13:53.910049
+ALTER TABLE "movimiento" ADD "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-03-12T15:13:57.690346
+ALTER TABLE "movimiento" ADD "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ;
+timestamp: 2026-03-12T15:15:27.721933
+CREATE TABLE "movimiento"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_tipo_movimiento" INTEGER REFERENCES "tipo_movimiento" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_estatus_movimiento" INTEGER REFERENCES "estatus_movimiento" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "cantidad" INTEGER NOT NULL,
+    "observaciones" TEXT,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2026-03-12T16:22:53.374540
+CREATE TABLE "movimiento"(
+    "id" SERIAL PRIMARY KEY,
+    "id_operativo" INTEGER REFERENCES "operativo" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_tipo_movimiento" INTEGER REFERENCES "tipo_movimiento" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_estatus_movimiento" INTEGER REFERENCES "estatus_movimiento" ("id") ON DELETE CASCADE ON UPDATE CASCADE  NOT NULL ,
+    "id_almacen_transferencia" INTEGER REFERENCES "almacen" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "cantidad" INTEGER NOT NULL,
+    "observaciones" TEXT,
+    "creado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha_reg" TIMESTAMP,
+    "fecha_mod" TIMESTAMP,
+    "modificado_por" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "ip_creado_por" VARCHAR(512),
+    "ip_modificado_por" VARCHAR(512),
+    "is_active" CHAR(1)
+);
+success!

@@ -59,7 +59,7 @@ def operativo():
         )
     ]
 
-    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links, deletable=False, formargs=argumentos_formulario)
+    grid = SQLFORM.grid(db.operativo, csv=False, fields=campos, links=links, deletable=False, details=False, formargs=argumentos_formulario, maxtextlength=60)
 
     return dict(grid=grid)
 
@@ -165,32 +165,40 @@ def configurar_operativo():
         response.flash = 'El formulario tiene errores'
 
     # ---------- CONFIGURACIÓN DE OPERATIVO_ALMACEN ----------
-    db.operativo_almacen.id_operativo.default = registro_id
-    db.operativo_almacen.id_operativo.writable = False
-    db.operativo_almacen.id_operativo.readable = False
+    db.operativo_almacen.id_operativo.default  = registro_id
+    db.operativo_almacen.id_operativo.writable = True
+    db.operativo_almacen.id_operativo.readable = True
+    db.operativo_almacen.id_almacen.readable = True
+    db.operativo_almacen.id_almacen.writable = True
 
-    # Evitar más de un registro por (id_operativo, id_almacen)
-    from gluon.validators import IS_NOT_IN_DB
-    db.operativo_almacen.id_almacen.requires = [
-        IS_IN_DB(db, 'almacen.id', '%(nombre)s'),
-        IS_NOT_IN_DB(
-            db(db.operativo_almacen.id_operativo == registro_id),
-            'operativo_almacen.id_almacen',
-            error_message='Ya existe un registro para este operativo y almacén'
-        )
-    ]
+    def validar_operativo_almacen(form):
+        id_almacen = form.vars.id_almacen
+        if not id_almacen:
+            return  # sin almacén no validamos nada
+
+        # En new, form.vars.id suele ser None; en edit, el id del registro
+        registro_existente = db(
+            (db.operativo_almacen.id_operativo == registro_id) &
+            (db.operativo_almacen.id_almacen == id_almacen) &
+            (db.operativo_almacen.id != form.vars.id)
+        ).count()
+
+        if registro_existente:
+            form.errors.id_almacen = 'Ya existe un registro para este operativo y almacén'
 
     query_almacen = (db.operativo_almacen.id_operativo == registro_id)
     almacenes_grid = SQLFORM.grid(
         query_almacen,
         csv=False,
         user_signature=False,
-        args=[registro_id]  # mantiene el id en la URL al hacer new/edit
+        searchable=False,
+        args=[registro_id],  # mantiene el id en la URL al hacer new/edit
+        onvalidation=validar_operativo_almacen
     )
 
     return dict(
-        operativo_data=db.operativo(registro_id), 
-        grid_operativo_combo=grid_operativo_combo, 
+        operativo_data=db.operativo(registro_id),
+        grid_operativo_combo=grid_operativo_combo,
         form_operativo_combo=form_operativo_combo,
         ope_combo_info=ope_combo_info,
         almacenes_grid=almacenes_grid
@@ -358,8 +366,138 @@ def mis_datos():
 @auth.requires_login()
 def inventario():
     campos = [field for field in db.movimiento if field.name != 'id']
-    grid = SQLFORM.grid(db.movimiento, csv=False, fields=campos)
+    
+    if request.args(0) == 'new':
+        db.movimiento.id_estatus_movimiento.default = 3 # BORRADOR
+
+    grid = SQLFORM.grid(
+        db.movimiento,
+        csv=False,
+        fields=campos,
+        deletable=False,
+        editable=lambda row: str(row.id_estatus_movimiento) not in ('4', '6'),
+        maxtextlength=60, 
+        user_signature=False,
+        create=False
+    )
 
     return dict(grid=grid)
 
 
+@auth.requires_login()
+def inventario_transferencia():
+    # Formulario para transferencias entre almacenes
+    form = SQLFORM.factory(
+        Field('operativo', db.operativo, label="Operativo",
+              requires=IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo')),
+        Field('id_almacen', db.almacen, label="Almacén origen",
+              requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
+        Field('id_almacen_transferencia', db.almacen, label="Almacén de transferencia",
+              requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén de transferencia')),
+        Field('cantidad', 'integer', label="Cantidad")
+    )
+
+    if form.process().accepted:
+        # Aquí iría la lógica de crear el/los movimientos de transferencia
+        try:
+            result = insertar_movimiento(
+                id_operativo=form.vars.operativo,
+                id_almacen=form.vars.id_almacen,
+                tipo_movimiento_txt=TIPO_MOV_SALIDA_TRANS,
+                estatus_movimiento_txt=EST_MOV_VALIDADO,
+                id_almacen_transferencia=form.vars.id_almacen_transferencia,
+                cantidad=form.vars.cantidad
+            )
+
+            result_b =insertar_movimiento(
+                id_operativo=form.vars.operativo,
+                id_almacen=form.vars.id_almacen,
+                tipo_movimiento_txt=TIPO_MOV_RECEPCION_TRANS,
+                estatus_movimiento_txt=EST_MOV_VALIDADO,
+                id_almacen_transferencia=form.vars.id_almacen_transferencia,
+                cantidad=form.vars.cantidad
+            )
+
+        except Exception as e:
+            response.flash = f"Error al registrar la transferencia: {str(e)}"
+
+        else:
+            response.flash = 'Transferencia registrada correctamente.'
+
+    elif form.errors:
+        response.flash = f"Error en el formulario: {form.errors}"
+
+    return dict(form=form)
+
+
+@auth.requires_login()
+def inventario_entrada():
+    # Formulario para movimientos de entrada
+    form = SQLFORM.factory(
+        Field('operativo', db.operativo, label="Operativo",
+              requires=IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo')),
+        Field('id_tipo_movimiento', db.tipo_movimiento, label="Tipo de Movimiento",
+              requires=IS_IN_DB(db(db.tipo_movimiento.signo > 0), 'tipo_movimiento.id', '%(nombre)s', zero='Seleccione un tipo de movimiento')),
+        Field('id_almacen', db.almacen, label="Almacén",
+              requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
+        Field('cantidad', 'integer', label="Cantidad")
+    )
+
+    if form.process().accepted:
+        # Aquí iría la lógica de crear el/los movimientos de transferencia
+        try:
+            result = insertar_movimiento(
+                id_operativo=form.vars.operativo,
+                id_almacen=form.vars.id_almacen,
+                tipo_movimiento_txt=form.vars.id_tipo_movimiento,
+                estatus_movimiento_txt=EST_MOV_VALIDADO,
+                cantidad=form.vars.cantidad
+            )
+            print('Resultado entrada')
+            print(result)
+        except Exception as e:
+            response.flash = f"Error al registrar la transferencia: {str(e)}"
+
+        else:
+            response.flash = 'Movimiento registrada correctamente.'
+
+    elif form.errors:
+        response.flash = f"Error en el formulario: {form.errors}"
+
+    return dict(form=form)
+
+
+@auth.requires_login()
+def inventario_salida():
+    # Formulario para movimientos de salida
+    form = SQLFORM.factory(
+        Field('operativo', db.operativo, label="Operativo",
+              requires=IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo')),
+        Field('id_tipo_movimiento', db.tipo_movimiento, label="Tipo de Movimiento",
+              requires=IS_IN_DB(db(db.tipo_movimiento.signo < 0), 'tipo_movimiento.id', '%(nombre)s', zero='Seleccione un tipo de movimiento')),
+        Field('id_almacen', db.almacen, label="Almacén",
+              requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
+        Field('cantidad', 'integer', label="Cantidad")
+    )
+
+    if form.process().accepted:
+        # Aquí iría la lógica de crear el/los movimientos de transferencia
+        try:
+            result = insertar_movimiento(
+                id_operativo=form.vars.operativo,
+                id_almacen=form.vars.id_almacen,
+                tipo_movimiento_txt=form.vars.id_tipo_movimiento,
+                estatus_movimiento_txt=EST_MOV_VALIDADO,
+                cantidad=form.vars.cantidad
+            )
+            
+        except Exception as e:
+            response.flash = f"Error al registrar la transferencia: {str(e)}"
+
+        else:
+            response.flash = 'Transferencia registrada correctamente.'
+
+    elif form.errors:
+        response.flash = f"Error en el formulario: {form.errors}"
+
+    return dict(form=form)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+from gluon import Field
 
 @auth.requires_login()
 def pedidos():
@@ -52,26 +53,48 @@ def pedidos():
 def get_estatus(lista):
     return lista[0]
 
+
 @auth.requires_login()
 def confirmar_pedido_entregado():
-    """
-    Controlador para la confirmación de pedidos en la solicitud.
-    Permite confirmar un pedido específico.
-    """
     pedido_id = request.args(0)
     pedido = db.pedido_operativo(pedido_id)
     id_registro = request.args(0)
     record = db.pedido_operativo(id_registro) or redirect(URL('index'))
 
-    db.pedido_operativo.id.readable = False 
-        
-    # Solo mostramos el campo observaciones
-    form = SQLFORM(db.pedido_operativo, record, fields=['observaciones'], buttons=[TAG.button('Guardar', _type="submit", _class="btn btn-primary")])
+    # Si no tiene usuario_retiro, asigna el actual
+    cambios = {}
+    if not record.id_usuario_entrega:
+        cambios['id_usuario_entrega'] = auth.user_id
+    if not record.id_usuario_retiro:
+        cambios['id_usuario_retiro'] = record.id_usuario
+    if cambios:
+        record.update_record(**cambios)
+
+    db.pedido_operativo.id.readable = False
+
+    if pedido and pedido.id_operativo:
+        db.pedido_operativo.id_almacen.requires = IS_IN_DB(
+            db((db.operativo_almacen.id_operativo == pedido.id_operativo) &
+               (db.operativo_almacen.id_almacen == db.almacen.id)),
+            'almacen.id',
+            '%(nombre)s'
+        )
+
+    form = SQLFORM(
+        db.pedido_operativo,
+        record,
+        fields=['id_usuario_entrega', 'id_usuario_retiro', 'id_almacen', 'observaciones'],
+        buttons=[TAG.button('Guardar', _type="submit", _class="btn btn-primary")]
+    )
 
     if form.process(formname='frm_observaciones').accepted and pedido:
         pedido.update_record(estatus='ENTREGADO', entrega_tiempo=datetime.now())
-        
-        # Respuesta especial para cerrar el modal y refrescar la tabla
+        result = insertar_movimiento(pedido.id_operativo, form.vars.id_almacen, tipo_movimiento_txt=TIPO_MOV_ENTREGA, estatus_movimiento_txt=EST_MOV_VALIDADO)
+        if not result:
+            # Si la inserción fue exitosa, podemos hacer algo
+            response.flash = "Error al registrar movimiento."
+
+            pass
         return SCRIPT("jQuery('#observaciones_frm').modal('hide'); window.location.reload();")
 
     return form

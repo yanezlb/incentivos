@@ -286,10 +286,11 @@ db.define_table('operativo',
     campos_comunes(),
     format='%(nombre)s'
 )
-db.operativo.fecha_inicio_solicitud.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
-db.operativo.fecha_fin_solicitud.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
-db.operativo.fecha_inicio_entrega.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
-db.operativo.fecha_fin_entrega.represent = lambda val, row: val.strftime('%Y-%m-%d') if val else ''
+db.operativo.id_estatus_operativo.represent = lambda valor, row: XML(get_badge_estatus_operativo(row.id_estatus_operativo))
+db.operativo.fecha_inicio_solicitud.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
+db.operativo.fecha_fin_solicitud.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
+db.operativo.fecha_inicio_entrega.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
+db.operativo.fecha_fin_entrega.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
 db.operativo.fecha_inicio_solicitud.requires = IS_DATE(format='%Y-%m-%d')
 db.operativo.fecha_fin_solicitud.requires = IS_DATE(format='%Y-%m-%d')
 db.operativo.fecha_inicio_entrega.requires = IS_DATE(format='%Y-%m-%d')
@@ -314,11 +315,17 @@ db.operativo_combo.id_operativo.requires = [
     IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo'), 
     IS_NOT_IN_DB(db, 'operativo_combo.id_operativo', error_message='Este operativo ya está asignado a otro combo')
 ]
+db.operativo_combo.venta_maxima.default = 1
+db.operativo_combo.venta_maxima.writable = False
+
 
 db.define_table('pedido_operativo',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),     
     Field('id_operativo_combo',  db.operativo_combo, label='Combo', notnull=True, required=True),
     Field('id_usuario',  db.auth_user, label='Empleado', notnull=True, required=True),
+    Field('id_usuario_retiro',  db.auth_user, label='Retirado por'),
+    Field('id_usuario_entrega', db.auth_user, label='Entregado por'),
+    Field('id_almacen',  db.almacen, label='Almacén'),
     Field('estatus', 'list:string', label='Estatus Pedido', requires=IS_IN_SET(['REGISTRADO', 'ENTREGADO']), notnull=True, required=True),
     Field('observaciones', 'text', label='Observaciones'),
     Field('entrega_tiempo',  'datetime', label='Tiempo de Entrega'),
@@ -340,13 +347,15 @@ db.define_table('estatus_movimiento',
     format='%(nombre)s'
 )
 
-
 db.define_table('movimiento',
     Field('id_operativo', db.operativo, label='Operativo', notnull=True, required=True),
     Field('id_almacen', db.almacen, label='Almacén', notnull=True, required=True),
     Field('id_tipo_movimiento', db.tipo_movimiento, label='Tipo movimiento', notnull=True, required=True),
     Field('id_estatus_movimiento', db.estatus_movimiento, label='Estatus movimiento', notnull=True, required=True),
+    Field('id_almacen_transferencia', db.almacen, label='Almacen Transferencia'),
     Field('cantidad', 'integer', label='Cantidad', notnull=True, required=True),
     Field('observaciones', 'text', label='Observaciones'),
     campos_comunes()
 )
+db.movimiento.id_estatus_movimiento.represent = lambda valor, row: XML(get_badge_estatus_movimiento(row.id_estatus_movimiento))
+db.movimiento.id_tipo_movimiento.represent = lambda valor, row: XML(get_badge_tipo_movimiento(row.id_tipo_movimiento))
