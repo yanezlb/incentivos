@@ -108,6 +108,30 @@
         <span>Detalle entregas</span>
     </div>
     <div class="card-body">
+        {{=A(SPAN(_class='fa-solid fa-file-export'), 
+                ' Exportar', 
+                _href=URL('reportes', 'exportar_reporte_entregas', vars=dict(operativo=request.vars.id_operativo or form.vars.get('id_operativo'), region=request.vars.id_region or form.vars.get('id_region'))  ), 
+                _class='btn btn-info')}}
+        <br>
+        {{=form.custom.begin}}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-6"><b>Región:</b></div>
+                        <div class="col-6">{{=form.custom.widget.id_region}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-6"><b>Operativo:</b></div>
+                        <div class="col-6">{{=form.custom.widget.id_operativo}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {{=form.custom.submit}}  <!-- importantísimo: este debe ser el botón tipo submit -->
+                </div>
+            </div>
+        {{=form.custom.end}}  
         <br>
         <div class="d-flex align-items-center">
             {{=grid}}

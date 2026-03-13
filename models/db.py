@@ -286,7 +286,7 @@ db.define_table('operativo',
     campos_comunes(),
     format='%(nombre)s'
 )
-db.operativo.id_estatus_operativo.represent = lambda valor, row: XML(get_badge_estatus_operativo(row.id_estatus_operativo))
+db.operativo.id_estatus_operativo.represent = lambda valor, row: XML(get_badge_estatus_operativo(row.id_estatus_operativo)) if row is not None else db.estatus_operativo(valor).nombre
 db.operativo.fecha_inicio_solicitud.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
 db.operativo.fecha_fin_solicitud.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''
 db.operativo.fecha_inicio_entrega.represent = lambda val, row: val.strftime('%d/%m/%Y') if val else ''

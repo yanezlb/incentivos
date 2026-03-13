@@ -209,6 +209,8 @@ def configurar_operativo():
 def usuarios():
     ## Para evitar que se muestre el campo email
     db.auth_user.email.writable = False
+    db.auth_user.fecha_nacimiento.writable = False
+    db.auth_user.fecha_ingreso.writable = False
 
     if request.args(0) == 'new':
         db.auth_user.first_name.writable = True
@@ -216,6 +218,7 @@ def usuarios():
         db.auth_user.cedula.writable = True
         db.auth_user.password.writable = True
         db.auth_user.email.writable = True
+        
 
     campos = [field for field in db.auth_user if field.name != 'id']
     argumentos_formulario = {}
@@ -223,7 +226,7 @@ def usuarios():
     if request.args(0) == 'edit':
         argumentos_formulario = dict(submit_button='Actualizar')
     
-    grid = SQLFORM.grid(db.auth_user, csv=False, fields=campos, deletable=False, formargs=argumentos_formulario)
+    grid = SQLFORM.grid((db.auth_user.is_active == True), csv=False, fields=campos, deletable=False, formargs=argumentos_formulario)
 
     form = SQLFORM.factory(
         Field('archivo_excel', 'upload', 
@@ -394,7 +397,8 @@ def inventario_transferencia():
               requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
         Field('id_almacen_transferencia', db.almacen, label="Almacén de transferencia",
               requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén de transferencia')),
-        Field('cantidad', 'integer', label="Cantidad")
+        Field('cantidad', 'integer', label="Cantidad"),
+        submit_button='Guardar'
     )
 
     if form.process().accepted:
@@ -440,7 +444,8 @@ def inventario_entrada():
               requires=IS_IN_DB(db(db.tipo_movimiento.signo > 0), 'tipo_movimiento.id', '%(nombre)s', zero='Seleccione un tipo de movimiento')),
         Field('id_almacen', db.almacen, label="Almacén",
               requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
-        Field('cantidad', 'integer', label="Cantidad")
+        Field('cantidad', 'integer', label="Cantidad"),
+        submit_button='Guardar'
     )
 
     if form.process().accepted:
@@ -476,7 +481,8 @@ def inventario_salida():
               requires=IS_IN_DB(db(db.tipo_movimiento.signo < 0), 'tipo_movimiento.id', '%(nombre)s', zero='Seleccione un tipo de movimiento')),
         Field('id_almacen', db.almacen, label="Almacén",
               requires=IS_IN_DB(db, 'almacen.id', '%(nombre)s', zero='Seleccione un almacén')),
-        Field('cantidad', 'integer', label="Cantidad")
+        Field('cantidad', 'integer', label="Cantidad"),
+        submit_button='Guardar'
     )
 
     if form.process().accepted:
