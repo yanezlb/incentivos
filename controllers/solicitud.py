@@ -138,7 +138,16 @@ def entregas():
 
     # 1. Formulario para capturar la cédula
     form = SQLFORM.factory(
-        Field('cedula', 'string', label='Cédula', requires=IS_NOT_EMPTY()),
+        Field(
+            'cedula',
+            'integer',
+            label='Cédula',
+            requires=[
+                IS_NOT_EMPTY(),
+                IS_MATCH('^[0-9]{1,12}$', error_message='Solo números, máximo 12 dígitos')
+            ],
+            length=12
+        ),
         submit_button='Buscar'
     )
 

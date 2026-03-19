@@ -155,7 +155,7 @@ db.parroquia.nombre.represent = lambda value, row: value.upper() if value else "
 auth.settings.extra_fields["auth_user"] = [
     Field('cedula', 'integer', label='CI'),
     Field('is_active','boolean', label='Estatus', default=True),
-    Field('telefono', 'integer', label='Telf.'),
+    Field('telefono', 'integer', label='Telf.', length=10, _maxlength="10", requires=IS_LENGTH(10)),
     Field('id_ente', db.ente, label='Ente', notnull=True, required=True),
     Field('id_negocio', db.negocio, label='Negocio / Filial', notnull=True, required=True),
     Field('id_region_acopio', db.region_acopio, label='Región Acopio', notnull=True, required=True),

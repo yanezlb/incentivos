@@ -52,28 +52,28 @@ def pedidos():
 @auth.requires_login()
 def entregas():
     form = SQLFORM.factory(
-        Field('id_region', db.region, label='Región', requires=IS_IN_DB(db, 'region.id', '%(nombre)s', zero='Seleccione una región')),
-        Field('id_operativo', db.operativo, label='Operativo', requires=IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Seleccione un operativo')),
+        Field('id_region', db.region, label='Región', requires=IS_EMPTY_OR(IS_IN_DB(db, 'region.id', '%(nombre)s', zero='Todas')), default=request.vars.id_region),
+        Field('id_operativo', db.operativo, label='Operativo', requires=IS_EMPTY_OR(IS_IN_DB(db, 'operativo.id', '%(nombre)s', zero='Todos')), default=request.vars.id_operativo),
         submit_button='Buscar',
-        keepvalues=True
+        keepvalues=True,
+        formname='formulario_entregas'
     )
 
     filtros = (db.pedido_operativo.id_almacen == db.almacen.id) & (db.pedido_operativo.estatus == 'ENTREGADO')
 
-    if form.process().accepted:
-        # aplicar filtros según formulario
-        # print("Form accepted with values:", form.vars.id_region, form.vars.id_operativo)
+    # Procesar el formulario usando el nombre explícito para evitar conflictos
+    if form.process(formname='formulario_entregas').accepted:
         if form.vars.id_region:
             filtros &= (db.almacen.id_region == form.vars.id_region)
         if form.vars.id_operativo:
             filtros &= (db.pedido_operativo.id_operativo == form.vars.id_operativo)
+        response.flash = 'Consulta satisfactoria.'
     elif form.errors:
         errores_txt = '; '.join(
-        f"{campo}: {msg}" for campo, msg in form.errors.items()
-    )
+            f"{campo}: {msg}" for campo, msg in form.errors.items()
+        )
         response.flash = errores_txt
 
-    
     fields = [
         db.almacen.id_region,
         db.pedido_operativo.id_operativo,
@@ -116,9 +116,9 @@ def entregas():
         groupby=db.auth_user.id_negocio
     )
 
-    por_region_acopio = db((db.pedido_operativo.id_usuario == db.auth_user.id) & filtros).select(
-        db.auth_user.id_region_acopio, contador, 
-        groupby=db.auth_user.id_region_acopio
+    por_region_acopio = db((db.pedido_operativo.id_almacen == db.almacen.id) & filtros).select(
+        db.almacen.id_region, contador, 
+        groupby=db.almacen.id_region
     )
 
 
@@ -466,8 +466,11 @@ def exportar_reporte_entregas():
     worksheet = workbook.add_worksheet('Reporte entregas') 
     filtro = ''
 
-    if request.vars.operativo != 'None' and request.vars.operativo is not None:
-        filtro = f" where b.id_operativo = {request.vars.operativo}"
+    if request.vars.id_operativo != 'None' and request.vars.id_operativo is not None:
+        filtro = f" and a.id_operativo = {request.vars.id_operativo}"
+
+    if request.vars.id_region != 'None' and request.vars.id_region is not None:
+        filtro = f" and b.id_region_acopio = {request.vars.id_region}"
 
     query_almacen = f"""SELECT 
                     b.cedula, b.first_name ||' '|| b.last_name nombre, b.fecha_nacimiento, 
@@ -480,7 +483,10 @@ def exportar_reporte_entregas():
                     join region e on b.id_region_acopio = e.id
                     join auth_user f on a.id_usuario_entrega = b.id
                     where a.estatus like '%ENTREGADO%'
+                    {filtro}
                     ORDER BY 1 ASC """
+    
+    print(query_almacen)
     
     datos_almacen = db.executesql(query_almacen, as_ordered_dict=True)
 
@@ -495,6 +501,25 @@ def exportar_reporte_entregas():
         'valign': 'vcenter'
     })
 
+    sheet_format = workbook.add_format({
+        'bold': True,
+        'font_name': 'Arial',
+        'font_size': 13,
+        'font_color': '#E60000',
+        'align': 'center',
+        'valign': 'vcenter'
+    })
+
+    formato_fecha = workbook.add_format({
+        'num_format': 'dd/mm/yyyy',
+        'border': 1,
+        })
+
+    formato_fecha_hora = workbook.add_format({
+        'num_format': 'dd/mm/yyyy hh:mm:ss',
+        'border': 1
+        })
+
     data_format = workbook.add_format({
         'font_name': 'Arial',
         'border': 1
@@ -502,8 +527,15 @@ def exportar_reporte_entregas():
 
     columnas = [
          'CÉDULA', 'NOMBRE', 'FECHA NACIMIENTO', 'ENTE', 
-         'NEGOCIO', 'REGIÓN ACOPIO', 'RECIBO COMBO', 'REGIÓN', 
-         'TIEMPO ENTREGA', 'NOMBRE ENTREGA', 'OBSERVACIONES']
+         'NEGOCIO/FILIAL', 'REGIÓN', 'RECIBO COMBO', 'REGIÓN ENTREGA', 
+         'FECHA ENTREGA', 'OPERADOR', 'OBSERVACIONES']
+
+    # Titulo hoja
+    print(request.vars.id_region, request.vars.id_operativo)
+    region_reporte = db.region(request.vars.id_region).nombre if request.vars.id_region != 'None' and request.vars.id_region != None else 'TODAS'
+    operativo_reporte = db.operativo(request.vars.id_operativo).nombre if request.vars.id_operativo != 'None' and request.vars.id_operativo != None else 'TODOS'
+    titulo_sheet = f"TRABAJADORES CON ENTREGA REGIÓN REGION: {region_reporte} OPERATIVO: {operativo_reporte}"
+    worksheet.merge_range('A1:K1', titulo_sheet, sheet_format)
 
     for col_num, titulo in enumerate(columnas):
         worksheet.write(3, col_num, titulo, header_format)
@@ -512,13 +544,13 @@ def exportar_reporte_entregas():
     for row_num, fila in enumerate(datos_almacen, start=4):
         worksheet.write(row_num, 0, fila['cedula'], data_format)
         worksheet.write(row_num, 1, fila['nombre'], data_format)
-        worksheet.write(row_num, 2, fila['fecha_nacimiento'], data_format)
+        worksheet.write(row_num, 2, fila['fecha_nacimiento'], formato_fecha)
         worksheet.write(row_num, 3, fila['ente'], data_format)
         worksheet.write(row_num, 4, fila['negocio'], data_format)
         worksheet.write(row_num, 5, fila['region_acopio'], data_format)
         worksheet.write(row_num, 6, fila['recibo_combo'], data_format)
         worksheet.write(row_num, 7, fila['region'], data_format)
-        worksheet.write(row_num, 8, fila['entrega_tiempo'], data_format)
+        worksheet.write(row_num, 8, fila['entrega_tiempo'], formato_fecha_hora)
         worksheet.write(row_num, 9, fila['nombre_operador'], data_format)
         worksheet.write(row_num, 10, fila['observaciones'], data_format)
 

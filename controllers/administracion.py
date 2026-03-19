@@ -11,7 +11,7 @@ def almacen():
     """
     # Lógica para manejar las operaciones CRUD de almacenes
     campos = [field for field in db.almacen if field.name != 'id']
-    grid = SQLFORM.grid(db.almacen, csv=False, fields=campos)
+    grid = SQLFORM.grid(db.almacen, csv=False, deletable=False, fields=campos)
 
     return dict(grid=grid)
 

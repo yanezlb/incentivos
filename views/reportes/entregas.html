@@ -11,6 +11,33 @@
   </ol>
 </nav>
 <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center font-weight-bold bg-info text-white ">
+        <span>Filtros</span>
+    </div>
+    <div class="card-body">
+        {{=form.custom.begin}}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-6"><b>Región:</b></div>
+                        <div class="col-6">{{=form.custom.widget.id_region}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-6"><b>Operativo:</b></div>
+                        <div class="col-6">{{=form.custom.widget.id_operativo}}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {{=form.custom.submit}}  <!-- importantísimo: este debe ser el botón tipo submit -->
+                </div>
+            </div>
+        {{=form.custom.end}}
+    </div>
+</div>
+<br>
+<div class="card">
     <div class="card-header d-flex justify-content-between align-items-center font-weight-bold bg-danger bg-danger text-white text-white">
         <span>Entregas</span>
     </div>
@@ -69,7 +96,7 @@
                                     <tbody>
                                         {{for region in regiones:}}
                                         <tr style="border-bottom: 2px solid #dee2e6; border-top: 2px solid #dee2e6;">
-                                            <td style="border: none">{{=db.region_acopio(region.auth_user.id_region_acopio).nombre}}</td>
+                                            <td style="border: none">{{=db.region(region.almacen.id_region).nombre}}</td>
                                             <td style="border: none" align="right">{{=region._extra['COUNT("auth_user"."id")']}}</td>
                                         </tr>
                                         {{pass}}
@@ -108,30 +135,13 @@
         <span>Detalle entregas</span>
     </div>
     <div class="card-body">
-        {{=A(SPAN(_class='fa-solid fa-file-export'), 
+        <div class="text-end text-right">
+            {{=A(SPAN(_class='fa-solid fa-file-export'), 
                 ' Exportar', 
-                _href=URL('reportes', 'exportar_reporte_entregas', vars=dict(operativo=request.vars.id_operativo or form.vars.get('id_operativo'), region=request.vars.id_region or form.vars.get('id_region'))  ), 
+                _href=URL('reportes', 'exportar_reporte_entregas', vars=dict(id_operativo=request.vars.id_operativo or form.vars.get('id_operativo'), id_region=request.vars.id_region or form.vars.get('id_region'))  ), 
                 _class='btn btn-info')}}
-        <br>
-        {{=form.custom.begin}}
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6"><b>Región:</b></div>
-                        <div class="col-6">{{=form.custom.widget.id_region}}</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6"><b>Operativo:</b></div>
-                        <div class="col-6">{{=form.custom.widget.id_operativo}}</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    {{=form.custom.submit}}  <!-- importantísimo: este debe ser el botón tipo submit -->
-                </div>
-            </div>
-        {{=form.custom.end}}  
+        </div>
+        
         <br>
         <div class="d-flex align-items-center">
             {{=grid}}
