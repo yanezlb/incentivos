@@ -240,6 +240,7 @@ db.auth_user.first_name.writable = False
 db.auth_user.last_name.writable = False
 db.auth_user.cedula.writable = False
 
+db.auth_user.email.requires.append(IS_NOT_IN_DB(db, 'auth_user.email'))
 
 def campos_comunes():
     campos_comunes = db.Table(db, 'comun',

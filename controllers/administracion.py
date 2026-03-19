@@ -206,7 +206,7 @@ def configurar_operativo():
 
 
 @auth.requires_login()
-def usuarios():
+def trabajadores():
     ## Para evitar que se muestre el campo email
     db.auth_user.email.writable = False
     db.auth_user.fecha_nacimiento.writable = False
@@ -320,8 +320,12 @@ def procesar_excel_logica(ruta):
         # Clasificaciones (Ente y Negocio)
         ente = db(db.ente.nombre == fila['CLASIF']).select().first()
         negocio = db(db.negocio.nombre == fila['CLASIF 2']).select().first()
+
+        existe_email = db(db.auth_user.email == fila['Correo']).count()
+
         # 4. Insert en auth_user
-        if reg and est_administrativo: # Validación mínima de que existen las maestras
+        if reg and est_administrativo and existe_email == 0: # Validación mínima de que existen las maestras
+
             db.auth_user.update_or_insert(db.auth_user.cedula == fila['Cédula'] ,
                 first_name = fila['Nombre y Apellido'].split()[0],
                 last_name = fila['Nombre y Apellido'].split()[1],
