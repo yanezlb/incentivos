@@ -1,0 +1,58 @@
+{{extend 'layout.html'}}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Administración</a></li>
+    <li class="breadcrumb-item"><a href="{{=URL('administracion', 'usuarios')}}">Usuarios</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Roles</li>
+  </ol>
+</nav>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
+        <span>Roles</span>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <tbody>
+                    <tr>
+                        <td><b>Nombre:</b> {{=usuario_data.first_name}} {{=usuario_data.last_name}}</td>
+                        <td><b>Cédula:</b> {{=usuario_data.cedula}}</td>
+                        <td><b>Ente:</b> {{=db.ente(usuario_data.id_ente).nombre or '-'}} </td>
+                        <td><b>Negocio / Filial:</b> {{=db.negocio(usuario_data.id_negocio).nombre or '-'}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b> {{=usuario_data.email or '-'}} </td>
+                        <td><b>Estado Adm.:</b> {{=db.estado(usuario_data.id_estado).nombre or '-'}} </td>
+                        <td><b>Estado Acopio:</b> {{=db.estado(usuario_data.id_estado_acopio).nombre or '-'}} </td>
+                        <td><b>Región centro de acopio:</b> {{=db.region(usuario_data.id_region_acopio).nombre or '-'}}</td>
+                       
+                    </tr>
+                    <tr>
+                        <td><b>Teléfono:</b> {{=usuario_data.telefono or '-'}}</td>
+                        <td><b>Fecha Nacimiento:</b> {{=formato_fecha(usuario_data.fecha_nacimiento)}}</td>
+                        <td><b>Fecha Ingreso:</b> {{=formato_fecha(usuario_data.fecha_ingreso)}}</td>
+                        <td><b>Estatus:</b> <span class="badge badge-{{= "success" if usuario_data.is_active else "danger"}}">{{= "Activo" if usuario_data.is_active else "Inactivo"}}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <div class="table-responsive">
+            <b>Roles:</b>
+            {{=form.custom.begin}}
+                <div class="mr-2">{{=form.custom.widget.id_rol}}</div>
+                <br>
+                <div class="text-center">
+                    {{=form.custom.submit}}
+                </div>
+            {{=form.custom.end}}
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>&nbsp;</small>
+    </div>
+</div>
+
+

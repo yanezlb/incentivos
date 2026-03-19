@@ -1,0 +1,25 @@
+{{extend 'layout.html'}}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Administración</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+  </ol>
+</nav>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-danger text-white font-weight-bold">
+        <span>Usuarios</span>
+    </div>
+    <div class="card-body">
+        <br><br>
+        <div class="table-responsive">
+            {{=grid}}
+        </div>
+        <br>
+    </div>
+    
+    <div class="card-footer bg-white text-muted">
+        <small>&nbsp;</small>
+    </div>
+</div>
+
+

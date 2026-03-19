@@ -361,6 +361,7 @@
 'Username already taken': 'Username already taken',
 'Username retrieve': 'Recuperar nombre de usuario',
 'Users': 'Usuarios',
+'USUARIOS': 'USUARIOS',
 'Value not in database': 'El valor no está en la base de datos',
 'Venta máxima': 'Venta máxima',
 'Verify Password': 'Verificar Contraseña',

@@ -15,8 +15,8 @@ EST_MOV_VALIDADO = 'Validado'
 EST_MOV_CONFIRMAR = 'Por confirmar'
 EST_MOV_ANULADO = 'Anulado'
 
-ROL_ADMINISTRADOR_CORPORATIVO = 'admin_corporativo'
-ROL_ADMINISTRADOR_REGIONAL = 'admin_regional'
+ROL_ADMINISTRADOR_CORPORATIVO = 'Administrador Corporativo'
+ROL_ADMINISTRADOR_REGIONAL = 'Administrador Regional'
 
 
 def formato_fecha(fecha_original):

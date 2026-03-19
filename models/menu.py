@@ -33,6 +33,7 @@ if auth.user:
                 (T('ALMACENES'), False, URL('administracion', 'almacen')),
                 (T('OPERATIVOS'), False, URL('administracion', 'operativo')),
                 (T('INVENTARIO'), False, URL('administracion', 'inventario')),
+                (T('USUARIOS'), False, URL('administracion', 'usuarios')),
             ]),
             (T('CONTACTO'), False, URL('default', 'contacto')),
         ] 

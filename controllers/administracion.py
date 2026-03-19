@@ -254,6 +254,54 @@ def trabajadores():
             
     return dict(form=form, grid=grid)
 
+@auth.requires_login()
+def usuarios():
+    links = [
+        dict(
+            header='', # Título de la columna
+            body=lambda row: A('Roles', 
+                               _class='button btn btn-primary', 
+                               _href=URL('usuarios_roles', args=[row.id]))
+        ),
+    ]
+
+    grid = SQLFORM.grid(
+            db.auth_user, 
+            links=links,
+            csv=False, deletable=False, 
+            editable=False, create=False)
+    
+    return dict(grid=grid)
+
+
+@auth.requires_login()
+def usuarios_roles():
+    id_usuario = request.args(0) 
+    usuario_data = db.auth_user(id_usuario)
+    rol_usuario = db(db.auth_membership.user_id == id_usuario).select(db.auth_membership.group_id).first()
+
+    form = SQLFORM.factory(
+        Field(
+            'id_rol',
+            db.auth_group,
+            requires=IS_EMPTY_OR(IS_IN_DB(db, 'auth_group.id', '%(role)s')),
+            default=rol_usuario.group_id if rol_usuario else None
+        ),
+        submit_button='Guardar'
+    )
+
+    if form.process().accepted:
+        id_rol = form.vars.id_rol
+        if id_rol and rol_usuario:
+            db.auth_membership.update_or_insert(
+                db.auth_membership.user_id == id_usuario,
+                user_id=id_usuario,
+                group_id=id_rol
+            )
+        redirect(URL('administracion', 'usuarios'))
+
+    return dict(form=form, usuario_data=usuario_data)
+
 
 @auth.requires_login()
 def desactivar_usuarios():
@@ -349,22 +397,6 @@ def procesar_excel_logica(ruta):
 @auth.requires_login()
 def mis_datos():
     usuario_id = auth.user_id
-    """
-    form = SQLFORM.factory(
-            Field('email', requires=[IS_NOT_EMPTY(), IS_EMAIL()], default=db.auth_user(usuario_id).email)
-        ).process()
-
-    if form.accepted:
-        user = db.auth_user(usuario_id)
-        correo = form.vars.email
-
-        user.update_record(email=correo, telefono_oficina=oficina, telefono_celular=celular)
-
-        response.flash = '¡Datos guardados!'
-        redirect(URL('administracion', 'mis_datos'))
-    elif form.errors:
-        response.flash = 'El formulario tiene errores'
-    """
 
     # return dict(form=form, usuario_data=db.auth_user(usuario_id))
     return dict(usuario_data=db.auth_user(usuario_id))
