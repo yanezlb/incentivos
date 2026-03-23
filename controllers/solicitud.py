@@ -173,6 +173,13 @@ def entregas():
     campos += [db.auth_user.cedula]
     # join lógico: pedido_operativo.id_usuario == auth_user.id
     qry = (db.pedido_operativo.id_usuario == db.auth_user.id)
+    
+    if auth.has_membership(ROL_ADMINISTRADOR_REGIONAL):
+        region_id = get_region_por_usuario(auth.user_id)
+
+        if region_id:
+            qry &= ((db.pedido_operativo.id_almacen == db.almacen.id) & (db.almacen.id_region_acopio == region_id))
+
     if filtro:
         # Si tienes campo cedula en auth_user, filtra por ahí
         qry &= (db.auth_user.cedula == filtro)

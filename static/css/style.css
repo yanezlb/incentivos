@@ -45,6 +45,7 @@ body {
 }
 .wrapper {
     display: flex;
+    min-height: 100vh;
 }
 .main {
     min-height: calc(100vh - 6.8rem);
@@ -145,6 +146,7 @@ a.sidebar-link {
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 #sidebar:not(.expand) #the-hr {
     margin-top: 1.45rem;

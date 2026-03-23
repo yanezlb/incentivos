@@ -44,18 +44,6 @@ if auth.user:
             (T('PEDIDOS'), False, URL('solicitud', 'pedidos')),
             (T('ENTREGAS'), False, URL('solicitud', 'entregas')),
             (T('MIS DATOS'), False, URL('administracion', 'mis_datos')),
-            (T('REPORTES'), False, '#', [
-                (T('PEDIDOS'), False, URL('reportes', 'pedidos')),
-                (T('ENTREGAS'), False, URL('reportes', 'entregas')),
-                (T('TRABAJADORES'), False, URL('reportes', 'trabajadores')),
-                (T('UBICACIÓN'), False, URL('reportes', 'ubicacion')),
-                (T('OPERATIVO'), False, URL('reportes', 'operativos')),
-                (T('INVENTARIO'), False, URL('reportes', 'inventario')),
-            ]),
-            (T('ADMINISTRACIÓN'), False, '#', [
-                (T('ALMACENES'), False, URL('administracion', 'almacen')),
-                (T('INVENTARIO'), False, URL('administracion', 'inventario')),
-            ]),
             (T('CONTACTO'), False, URL('default', 'contacto')),
         ] 
 

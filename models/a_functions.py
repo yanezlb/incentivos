@@ -98,3 +98,8 @@ def insertar_movimiento(id_operativo, id_almacen, tipo_movimiento_txt=TIPO_MOV_E
     except Exception as e:
         print(f"Error al insertar movimiento: {e}")
         return None
+ 
+    
+def get_region_por_usuario(id_usuario):
+    region = db(db.auth_user.id == id_usuario).select().first()
+    return region.id_region_acopio if region else None
